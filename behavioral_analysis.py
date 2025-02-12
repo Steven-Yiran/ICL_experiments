@@ -51,14 +51,6 @@ def parse_args():
     return args
 
 
-def extract_answer(entry):
-    """String preprocessing on continuations in nli_results.csv"""
-    entry = entry.split(",")
-    entry[0] = entry[0][2:-1]
-    entry[1] = entry[1][2:-2]
-    return entry
-
-
 def create_dataset(data, args):
     """Split dataset into labelled valid and invalid premise-hypothesis strings"""
 

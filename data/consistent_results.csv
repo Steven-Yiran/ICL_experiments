@@ -1,79 +1,1249 @@
-,Unnamed: 0,index,name,prompt_name,input,continuations,correct_answer,is_consistent,is_nonsense,is_realistic,logprobs,multiple_choice_grade,human_matched_logprobs,human_matched_multiple_choice_grade
-1,1,1,4556910622852732112,Human-like,"If birds have fewer legs than octopuses, then octopuses have ","['more legs than birds', 'fewer legs than birds']",['more legs than birds'],True,False,True,[-2.09814024 -4.95558834],True,[-1.06984663 -5.33391047],True
-3,3,3,8089988138108333280,Human-like,"If nests are smaller than igloos, then igloos are ","['bigger than nests', 'smaller than nests']",['bigger than nests'],True,False,True,[-3.57045841 -4.72316694],True,[-0.9477579  -5.20840883],True
-5,5,5,-5980943527471895486,Human-like,"If molehills are smaller than mountains, then mountains are ","['bigger than molehills', 'smaller than molehills']",['bigger than molehills'],True,False,True,[-3.25677729 -6.44883776],True,[-0.95326149 -5.732862  ],True
-7,7,7,-6161920471928851323,Human-like,"If trees are smaller than buildings, then buildings are ","['bigger than trees', 'smaller than trees']",['bigger than trees'],True,False,True,[-3.66934443 -4.76796341],True,[-0.88866884 -5.03578472],True
-9,9,9,-3300795068087188707,Human-like,"If puddles are smaller than seas, then seas are ","['bigger than puddles', 'smaller than puddles']",['bigger than puddles'],True,False,True,[-3.5312438  -6.64994287],True,[-0.86205202 -5.49500179],True
-11,11,11,5887492130568330782,Human-like,"If the moon is smaller than the earth, then the earth is ","['bigger than the moon', 'smaller than the moon']",['bigger than the moon'],True,False,True,[-3.23005557 -5.68768883],True,[-0.93582934 -4.82241058],True
-13,13,13,7446952098048495769,Human-like,"If a nightmare is less peaceful than a dream, then a dream is ","['more peaceful than a nightmare', 'less peaceful than a nightmare']",['more peaceful than a nightmare'],True,False,True,[-4.0181303  -7.02302647],True,[-0.9936043  -5.38844919],True
-15,15,15,-4402034151617450847,Human-like,"If clouds is less useful than paper, then paper is ","['more useful than clouds', 'less useful than clouds']",['more useful than clouds'],True,False,True,[-2.68760395 -5.47949553],True,[-1.21317983 -4.59866524],True
-17,17,17,4087225834866934120,Human-like,"If fire is less wet than rain, then rain is ","['more wet than fire', 'less wet than fire']",['more wet than fire'],True,False,True,[-4.55824089 -6.57640266],True,[-1.12264323 -4.50922203],True
-19,19,19,2238435225246541453,Human-like,"If weeds are less beautiful than roses, then roses are ","['more beautiful than weeds', 'less beautiful than weeds']",['more beautiful than weeds'],True,False,True,[-2.69585991 -4.89260864],True,[-0.94760454 -5.73709822],True
-21,21,21,-7351310407398577285,Human-like,"If the Sahara desert is colder than the Arctic, then the Sahara desert is ","['hotter than the Arctic', 'colder than the Arctic']",['hotter than the Arctic'],True,False,True,[-4.39467716 -2.8282268 ],False,[-1.44911587 -1.70352733],True
-23,23,23,641466891538537911,Human-like,"If war is worse than peace, then peace is ","['better than war', 'worse than war']",['better than war'],True,False,True,[-1.86408818 -3.65171838],True,[-1.02401137 -3.91829276],True
-25,25,25,-3096750830088355151,Human-like,"If Earth is smaller than the Jupiter, then Jupiter is ","['bigger than the Earth', 'smaller than the Earth']",['bigger than the Earth'],True,False,True,[-3.9239521  -5.69256639],True,[-1.05216765 -4.92993164],True
-27,27,27,-4016624133278071867,Human-like,"If summer is hotter than winter, then winter is ","['colder than summer', 'hotter than summer']",['colder than summer'],True,False,True,[-3.31395459 -6.1711216 ],True,[-0.8082481  -4.09775686],True
-29,29,29,2693954123957747559,Human-like,"If lakes are smaller than oceans, then oceans are ","['bigger than lakes', 'smaller than lakes']",['bigger than lakes'],True,False,True,[-3.79277134 -5.02024221],True,[-0.87304318 -5.50356579],True
-31,31,31,-4149835315430007994,Human-like,"If darkness is darker than light, then light is ","['brighter than darkness', 'darker than darkness']",['brighter than darkness'],True,False,True,[-4.08214474 -4.07328415],False,[-1.34959912 -3.24076247],True
-33,33,33,5443249373229609198,Human-like,"If Japan is smaller than America, then America is ","['bigger than Japan', 'smaller than Japan']",['bigger than Japan'],True,False,True,[-3.5397439  -5.42931938],True,[-0.8864103 -5.0182085],True
-35,35,35,3138367768686163428,Human-like,"If ants are uglier than butterflies, then butterflies are ","['prettier than ants', 'uglier than ants']",['prettier than ants'],True,False,True,[-3.66607261 -4.63659716],True,[-1.02240026 -4.66080189],True
-37,37,37,-2554502362075861647,Human-like,"If rain is hotter than snow, then snow is ","['colder than rain', 'hotter than rain']",['colder than rain'],True,False,True,[-2.5649209  -6.88389921],True,[-0.80476981 -4.07361221],True
-39,39,39,1438293165302359880,Human-like,"If shrubs are shorter than trees, then trees are ","['taller than shrubs', 'shorter than shrubs']",['taller than shrubs'],True,False,True,[-3.20159101 -4.73216629],True,[-0.88489228 -5.04247332],True
-41,41,41,-6721261362112549944,Human-like,"If water is hotter than ice, then ice is ","['colder than water', 'hotter than water']",['colder than water'],True,False,True,[-2.77855492 -6.59237242],True,[-0.88435072 -3.40231371],True
-43,43,43,-6191369592476343321,Human-like,"If hills are shorter than mountains, then mountains are ","['higher than hills', 'shorter than hills']",['higher than hills'],True,False,True,[-5.85424805 -4.92086887],False,[-0.82341391 -4.71411324],True
-45,45,45,-7972743269194599296,Human-like,"If children are smaller than adults, then adults are ","['bigger than children', 'smaller than children']",['bigger than children'],True,False,True,[-3.56313753 -4.24395943],True,[-0.81454992 -5.83302402],True
-47,47,47,-809109503967777128,Human-like,"If snakes are less scary than lizards, then lizards are ","['less scary than snakes', 'less scary than snakes']",['less scary than snakes'],True,False,True,[-5.37042618 -5.37042618],True,[-1.85545838 -1.85545838],True
-49,49,49,7120674138915473687,Human-like,"If turtles are slower than wolves, then wolves are ","['faster than turtles', 'slower than turtles']",['faster than turtles'],True,False,True,[-2.41743159 -5.28451157],True,[-1.03566587 -4.4279356 ],True
-51,51,51,7531659882959321556,Human-like,"If winter is colder than summer, then summer is ","['hotter than winter', 'colder than winter']",['hotter than winter'],True,False,True,[-5.57958508 -4.7137537 ],False,[-0.76897645 -5.46292162],True
-53,53,53,-8483375550141420446,Human-like,"If leaves are lighter than books, then books are ","['heavier than leaves', 'lighter than leaves']",['heavier than leaves'],True,False,True,[-2.80971098 -4.85113811],True,[-0.87356657 -7.03998947],True
-55,55,55,-4745115924433912458,Human-like,"If broccoli is less sweet than candy, then candy is ","['sweeter than broccoli', 'less sweet than broccoli']",['sweeter than broccoli'],True,False,True,[-4.31531477 -5.21309662],True,[-0.98351771 -5.75276947],True
-57,57,57,-3517692489633643134,Human-like,"If trees are shorter than skyscrapers, then skyscrapers are ","['taller than trees', 'shorter than trees']",['taller than trees'],True,False,True,[-2.88959026 -4.81319094],True,[-0.90447652 -4.16157055],True
-59,59,59,-582045587618788193,Human-like,"If dry is less wet than water, then water is ","['more wet than dry', 'less wet than dry']",['more wet than dry'],True,False,True,[-4.63132286 -6.11572266],True,[-1.10305119 -4.8684535 ],True
-61,61,61,4108633914967051091,Human-like,"If ice is less hot than fire, then fire is ","['more hot than ice', 'less hot than ice']",['more hot than ice'],True,False,True,[-4.49941349 -5.30469942],True,[-1.14286864 -4.40894127],True
-63,63,63,8332264589054151229,Human-like,"If paper is softer than wood, then wood is ","['harder than paper', 'softer than paper']",['harder than paper'],True,False,True,[-3.7700603  -5.42918634],True,[-0.80233109 -4.70617199],True
-65,65,65,-5428066310799666873,Human-like,"If daisies are less beautiful than roses, then roses are ","['more beautiful than daisies', 'less beautiful than daisies']",['more beautiful than daisies'],True,False,True,[-2.32426596 -4.46283817],True,[-0.87990677 -5.830791  ],True
-67,67,67,-3295567600962504739,Human-like,"If snakes are drier than lizards, then lizards are ","['slimier than snakes', 'drier than snakes']",['slimier than snakes'],True,False,True,[-10.80035782  -6.06811047],False,[-1.71906972 -2.84826255],True
-69,69,69,-6460876195130366937,Human-like,"If rain is quieter than thunder, then thunder is ","['louder than rain', 'quieter than rain']",['louder than rain'],True,False,True,[-2.99917579 -5.02162075],True,[-1.02302253 -5.90519667],True
-71,71,71,-2352716056817615860,Human-like,"If librarians are less funny than clowns, then clowns are ","['funnier than librarians', 'less funny than librarians']",['funnier than librarians'],True,False,True,[-3.4454813  -6.24527359],True,[-1.23887372 -5.00223732],True
-73,73,73,-842568114272974300,Human-like,"If dogs are faster than hens, then hens are ","['slower than dogs', 'faster than dogs']",['slower than dogs'],True,False,True,[-1.74820387 -5.64969349],True,[-0.83047992 -4.33972073],True
-75,75,75,-8406027912489967336,Human-like,"If cars are less cute than dogs, then dogs are ","['cuter than cars', 'less cute than cars']",['cuter than cars'],True,False,True,[-4.40843391 -5.40457869],True,[-0.85517174 -4.77057838],True
-77,77,77,6848649372795317416,Human-like,"If snow are less fluffy than clouds, then clouds are ","['fluffier than snow', 'less fluffy than snow']",['fluffier than snow'],True,False,True,[-3.0975709  -5.49233341],True,[-1.3372339  -4.23181009],True
-79,79,79,-18196839459812143,Human-like,"If roses are less hairy than spiders, then spiders are ","['more hairy than roses', 'less hairy than roses']",['more hairy than roses'],True,False,True,[-3.45651269 -5.24710178],True,[-1.06144297 -5.21762466],True
-81,81,81,319768797909182233,Human-like,"If roses are smaller than apples, then apples are ","['bigger than roses', 'smaller than roses']",['bigger than roses'],True,False,True,[-2.93657064 -5.02770138],True,[-0.84438115 -5.23664284],True
-83,83,83,-7903782303914014183,Human-like,"If dogs are bigger than cats, then cats are ","['smaller than dogs', 'bigger than dogs']",['smaller than dogs'],True,False,True,[-2.31229019 -5.14388084],True,[-0.81736642 -4.08696985],True
-85,85,85,418410672721858962,Human-like,"If squares are less round than balls, then balls are ","['rounder than squares', 'less round than squares']",['rounder than squares'],True,False,True,[-5.22541046 -6.1791563 ],True,[-1.41931713 -5.80894327],True
-87,87,87,3043557737824961705,Human-like,"If oranges are less sweet than grapes, then grapes are ","['more sweet than oranges', 'less sweet than oranges']",['more sweet than oranges'],True,False,True,[-4.77512836 -4.59071255],False,[-0.99262953 -5.00566959],True
-89,89,89,3380124850463601628,Human-like,"If shoes are shorter than chairs, then chairs are ","['taller than shoes', 'shorter than shoes']",['taller than shoes'],True,False,True,[-3.58231544 -5.9799118 ],True,[-1.00285459 -4.01727009],True
-91,91,91,-5483882675143090462,Human-like,"If walking is slower than running, then running is ","['faster than walking', 'slower than walking']",['faster than walking'],True,False,True,[-2.96637988 -5.7692585 ],True,[-0.92374504 -4.69135237],True
-93,93,93,602282145715352978,Human-like,"If walking is less fun than running, then running is ","['more fun than walking', 'less fun than walking']",['more fun than walking'],True,False,True,[-2.83154964 -6.04595804],True,[-0.98591596 -5.51750708],True
-95,95,95,-92367407655224778,Human-like,"If cats can jump less far than frogs, then frogs can ","['jump farther than cats', 'jump less far than cats']",['jump farther than cats'],True,False,True,[-3.26552343 -3.90423965],True,[-0.9758454  -4.11378384],True
-97,97,97,-5379612810413589975,Human-like,"If humans can fly slower than birds, then birds can ","['fly faster than humans', 'fly slower than humans']",['fly faster than humans'],True,False,True,[-1.84460223 -4.63547039],True,[-1.13598239 -4.16497707],True
-99,99,99,-5656782923599060157,Human-like,"If bears are bigger than spiders, then spiders are ","['smaller than bears', 'bigger than bears']",['smaller than bears'],True,False,True,[-2.33542395 -4.95436573],True,[-0.89118624 -3.77561069],True
-101,101,101,-1524516348782716345,Human-like,"If goats have shorter necks than giraffes, then giraffes have ","['longer necks than goats', 'shorter necks than goats']",['longer necks than goats'],True,False,True,[-2.76029587 -5.41178083],True,[-0.9890089  -4.51407051],True
-103,103,103,5751260044848901114,Human-like,"If worms are less scary than sharks, then sharks are ","['more scary than worms', 'less scary than worms']",['more scary than worms'],True,False,True,[-4.11018991 -6.36603403],True,[-1.00565434 -5.16855335],True
-105,105,105,8965208748734051059,Human-like,"If shrubs are smaller than trees, then trees are ","['bigger than shrubs', 'smaller than shrubs']",['bigger than shrubs'],True,False,True,[-3.49928927 -5.40962505],True,[-0.87316871 -5.90124893],True
-107,107,107,4817162430323848740,Human-like,"If airplanes are slower than rockets, then rockets are ","['faster than airplanes', 'slower than airplanes']",['faster than airplanes'],True,False,True,[-2.33909798 -5.03923273],True,[-1.02824759 -4.66691208],True
-109,109,109,-8895116630550333295,Human-like,"If lemons are less sweet than tomatoes, then tomatoes are ","['sweeter than lemons', 'less sweet than lemons']",['sweeter than lemons'],True,False,True,[-3.47000265 -6.01220083],True,[-1.01526308 -4.91111374],True
-111,111,111,-7293301576167097237,Human-like,"If mice can run slower than cheetahs, then cheetahs can ","['run faster than mice', 'run slower than mice']",['run faster than mice'],True,False,True,[-2.02840972 -5.73127174],True,[-0.9587726 -4.6058116],True
-113,113,113,628572805107050760,Human-like,"If giraffes are skinnier than penguins, then penguins are ","['fatter than giraffes', 'skinnier than giraffes']",['fatter than giraffes'],True,False,True,[-3.78744888 -4.60438824],True,[-1.11829662 -3.75066471],True
-115,115,115,6920915079211142666,Human-like,"If fish are less loyal than dogs, then dogs are ","['more loyal than fish', 'less loyal than fish']",['more loyal than fish'],True,False,True,[-2.78553677 -5.16016531],True,[-0.9985218 -5.4226594],True
-117,117,117,-2325920902010232222,Human-like,"If birds are less dangerous than bees, then bees are ","['more dangerous than birds', 'less dangerous than birds']",['more dangerous than birds'],True,False,True,[-3.27633023 -5.43422127],True,[-0.99715418 -5.26497412],True
-119,119,119,-3638489596351810918,Human-like,"If caterpillars are weaker than ants, then ants are ","['stronger than caterpillars', 'weaker than caterpillars']",['stronger than caterpillars'],True,False,True,[-2.94509673 -6.27528   ],True,[-1.05217838 -5.93975115],True
-121,121,121,6854286059243093547,Human-like,"If wolves are less dangerous than lions, then lions are ","['more dangerous than wolves', 'less dangerous than wolves']",['more dangerous than wolves'],True,False,True,[-2.66327691 -4.89151478],True,[-0.99951178 -5.41140556],True
-123,123,123,-6189806648415316457,Human-like,"If ants are shorter than people, then people are ","['taller than ants', 'shorter than ants']",['taller than ants'],True,False,True,[-2.94371295 -5.30450344],True,[-0.852552   -4.87059355],True
-125,125,125,1520162220428483952,Human-like,"If fish are less beautiful than butterflies, then butterflies are ","['more beautiful than fish', 'less beautiful than fish']",['more beautiful than fish'],True,False,True,[-2.81769872 -5.42305326],True,[-1.01312506 -5.17161417],True
-127,127,127,4449328464121549937,Human-like,"If cats are weaker than dogs, then dogs are ","['stronger than cats', 'weaker than cats']",['stronger than cats'],True,False,True,[-2.66602087 -6.08168507],True,[-0.92013597 -5.68630028],True
-129,129,129,-8898901983486089309,Human-like,"If insects are weaker than gorillas, then gorillas are ","['stronger than insects', 'weaker than insects']",['stronger than insects'],True,False,True,[-2.85450816 -5.97889805],True,[-0.91855425 -6.30516577],True
-131,131,131,4252095085205046050,Human-like,"If the night is colder than the day, then the day is ","['hotter than the night', 'colder than the night']",['hotter than the night'],True,False,True,[-4.47678328 -3.87036228],False,[-0.89218515 -4.55263186],True
-133,133,133,-1845929951718846157,Human-like,"If silver is less expensive than gold, then gold is ","['more expensive than silver', 'less expensive than silver']",['more expensive than silver'],True,False,True,[-2.33587646 -4.39907217],True,[-1.05788386 -6.10027218],True
-135,135,135,-1957362655164235651,Human-like,"If enemies are worse than friends, then friends are ","['better than enemies', 'worse than enemies']",['better than enemies'],True,False,True,[-2.61239195 -3.7497046 ],True,[-1.05625796 -3.60311961],True
-137,137,137,2786473815015672619,Human-like,"If cars are smaller than boats, then boats are ","['bigger than cars', 'smaller than cars']",['bigger than cars'],True,False,True,[-3.31700659 -6.74979353],True,[-0.87819988 -5.27633858],True
-139,139,139,845466941182018256,Human-like,"If horses are slower than cars, then cars are ","['faster than horses', 'slower than horses']",['faster than horses'],True,False,True,[-3.12715292 -5.45640087],True,[-0.95593494 -4.50098991],True
-141,141,141,3517436652405633909,Human-like,"If snow is drier than rain, then rain is ","['wetter than snow', 'drier than snow']",['wetter than snow'],True,False,True,[-3.47771144 -5.78028965],True,[-0.93253577 -4.89910269],True
-143,143,143,7531659882959321556,Human-like,"If winter is colder than summer, then summer is ","['hotter than winter', 'colder than winter']",['hotter than winter'],True,False,True,[-5.57958508 -4.7137537 ],False,[-0.76897645 -5.46292162],True
-145,145,145,-5822091466613857546,Human-like,"If Europe is smaller than Africa, then Africa is ","['bigger than Europe', 'smaller than Europe']",['bigger than Europe'],True,False,True,[-3.46112132 -5.1904192 ],True,[-0.95124078 -5.21304512],True
-147,147,147,9022930056001478339,Human-like,"If Europe is smaller than Latin America, then Latin America is ","['bigger than Europe', 'smaller than Europe']",['bigger than Europe'],True,False,True,[-3.81306887 -5.35050821],True,[-0.94575793 -4.95079994],True
-149,149,149,-6717285303358404560,Human-like,"If Europe is smaller than Asia, then Asia is ","['bigger than Europe', 'smaller than Europe']",['bigger than Europe'],True,False,True,[-3.60011578 -4.96939325],True,[-0.8830663  -5.39637852],True
-151,151,151,5220437495604394210,Human-like,"If Australia is smaller than Africa, then Africa is ","['bigger than Australia', 'smaller than Australia']",['bigger than Australia'],True,False,True,[-3.47135258 -5.39657164],True,[-0.88790393 -5.02470779],True
-153,153,153,-7683712629492836919,Human-like,"If the moon is colder than the sun, then the sun is ","['hotter than the moon', 'colder than the moon']",['hotter than the moon'],True,False,True,[-3.47980046 -4.54224873],True,[-0.87836957 -4.51750612],True
-155,155,155,-6289411724456132838,Human-like,"If the moon is dimmer than the sun, then the sun is ","['brighter than the moon', 'dimmer than the moon']",['brighter than the moon'],True,False,True,[-3.2448256  -3.71618176],True,[-0.92765743 -5.17861748],True
+ori_idx,prompt
+1,birds have more legs than octopuses. Do birds have more legs than octopuses?
+1,birds have more legs than octopuses. Do birds have fewer legs than octopuses?
+1,birds have more legs than octopuses. Do octopuses have more legs than birds?
+1,birds have more legs than octopuses. Do octopuses have fewer legs than birds?
+1,birds have fewer legs than octopuses. Do birds have more legs than octopuses?
+1,birds have fewer legs than octopuses. Do birds have fewer legs than octopuses?
+1,birds have fewer legs than octopuses. Do octopuses have more legs than birds?
+1,birds have fewer legs than octopuses. Do octopuses have fewer legs than birds?
+1,octopuses have more legs than birds. Do birds have more legs than octopuses?
+1,octopuses have more legs than birds. Do birds have fewer legs than octopuses?
+1,octopuses have more legs than birds. Do octopuses have more legs than birds?
+1,octopuses have more legs than birds. Do octopuses have fewer legs than birds?
+1,octopuses have fewer legs than birds. Do birds have more legs than octopuses?
+1,octopuses have fewer legs than birds. Do birds have fewer legs than octopuses?
+1,octopuses have fewer legs than birds. Do octopuses have more legs than birds?
+1,octopuses have fewer legs than birds. Do octopuses have fewer legs than birds?
+3,nests are bigger than igloos. Are nests bigger than igloos?
+3,nests are bigger than igloos. Are nests smaller than igloos?
+3,nests are bigger than igloos. Is igloos bigger than nests?
+3,nests are bigger than igloos. Is igloos smaller than nests?
+3,nests are smaller than igloos. Are nests bigger than igloos?
+3,nests are smaller than igloos. Are nests smaller than igloos?
+3,nests are smaller than igloos. Is igloos bigger than nests?
+3,nests are smaller than igloos. Is igloos smaller than nests?
+3,igloos are bigger than nests. Are nests bigger than igloos?
+3,igloos are bigger than nests. Are nests smaller than igloos?
+3,igloos are bigger than nests. Is igloos bigger than nests?
+3,igloos are bigger than nests. Is igloos smaller than nests?
+3,igloos are smaller than nests. Are nests bigger than igloos?
+3,igloos are smaller than nests. Are nests smaller than igloos?
+3,igloos are smaller than nests. Is igloos bigger than nests?
+3,igloos are smaller than nests. Is igloos smaller than nests?
+5,molehills are bigger than mountains. Are molehills bigger than mountains?
+5,molehills are bigger than mountains. Are molehills smaller than mountains?
+5,molehills are bigger than mountains. Are mountains bigger than molehills?
+5,molehills are bigger than mountains. Are mountains smaller than molehills?
+5,molehills are smaller than mountains. Are molehills bigger than mountains?
+5,molehills are smaller than mountains. Are molehills smaller than mountains?
+5,molehills are smaller than mountains. Are mountains bigger than molehills?
+5,molehills are smaller than mountains. Are mountains smaller than molehills?
+5,mountains are bigger than molehills. Are molehills bigger than mountains?
+5,mountains are bigger than molehills. Are molehills smaller than mountains?
+5,mountains are bigger than molehills. Are mountains bigger than molehills?
+5,mountains are bigger than molehills. Are mountains smaller than molehills?
+5,mountains are smaller than molehills. Are molehills bigger than mountains?
+5,mountains are smaller than molehills. Are molehills smaller than mountains?
+5,mountains are smaller than molehills. Are mountains bigger than molehills?
+5,mountains are smaller than molehills. Are mountains smaller than molehills?
+7,trees are bigger than buildings. Are trees bigger than buildings?
+7,trees are bigger than buildings. Are trees smaller than buildings?
+7,trees are bigger than buildings. Are buildings bigger than trees?
+7,trees are bigger than buildings. Are buildings smaller than trees?
+7,trees are smaller than buildings. Are trees bigger than buildings?
+7,trees are smaller than buildings. Are trees smaller than buildings?
+7,trees are smaller than buildings. Are buildings bigger than trees?
+7,trees are smaller than buildings. Are buildings smaller than trees?
+7,buildings are bigger than trees. Are trees bigger than buildings?
+7,buildings are bigger than trees. Are trees smaller than buildings?
+7,buildings are bigger than trees. Are buildings bigger than trees?
+7,buildings are bigger than trees. Are buildings smaller than trees?
+7,buildings are smaller than trees. Are trees bigger than buildings?
+7,buildings are smaller than trees. Are trees smaller than buildings?
+7,buildings are smaller than trees. Are buildings bigger than trees?
+7,buildings are smaller than trees. Are buildings smaller than trees?
+9,puddles are bigger than seas. Are puddles bigger than seas?
+9,puddles are bigger than seas. Are puddles smaller than seas?
+9,puddles are bigger than seas. Are seas bigger than puddles?
+9,puddles are bigger than seas. Are seas smaller than puddles?
+9,puddles are smaller than seas. Are puddles bigger than seas?
+9,puddles are smaller than seas. Are puddles smaller than seas?
+9,puddles are smaller than seas. Are seas bigger than puddles?
+9,puddles are smaller than seas. Are seas smaller than puddles?
+9,seas are bigger than puddles. Are puddles bigger than seas?
+9,seas are bigger than puddles. Are puddles smaller than seas?
+9,seas are bigger than puddles. Are seas bigger than puddles?
+9,seas are bigger than puddles. Are seas smaller than puddles?
+9,seas are smaller than puddles. Are puddles bigger than seas?
+9,seas are smaller than puddles. Are puddles smaller than seas?
+9,seas are smaller than puddles. Are seas bigger than puddles?
+9,seas are smaller than puddles. Are seas smaller than puddles?
+11,moon is bigger than earth. Is moon bigger than earth?
+11,moon is bigger than earth. Is moon smaller than earth?
+11,moon is bigger than earth. Is earth bigger than moon?
+11,moon is bigger than earth. Is earth smaller than moon?
+11,moon is smaller than earth. Is moon bigger than earth?
+11,moon is smaller than earth. Is moon smaller than earth?
+11,moon is smaller than earth. Is earth bigger than moon?
+11,moon is smaller than earth. Is earth smaller than moon?
+11,earth is bigger than moon. Is moon bigger than earth?
+11,earth is bigger than moon. Is moon smaller than earth?
+11,earth is bigger than moon. Is earth bigger than moon?
+11,earth is bigger than moon. Is earth smaller than moon?
+11,earth is smaller than moon. Is moon bigger than earth?
+11,earth is smaller than moon. Is moon smaller than earth?
+11,earth is smaller than moon. Is earth bigger than moon?
+11,earth is smaller than moon. Is earth smaller than moon?
+13,nightmare is more peaceful than dream. Is nightmare more peaceful than dream?
+13,nightmare is more peaceful than dream. Is nightmare less peaceful than dream?
+13,nightmare is more peaceful than dream. Is dream more peaceful than nightmare?
+13,nightmare is more peaceful than dream. Is dream less peaceful than nightmare?
+13,nightmare is less peaceful than dream. Is nightmare more peaceful than dream?
+13,nightmare is less peaceful than dream. Is nightmare less peaceful than dream?
+13,nightmare is less peaceful than dream. Is dream more peaceful than nightmare?
+13,nightmare is less peaceful than dream. Is dream less peaceful than nightmare?
+13,dream is more peaceful than nightmare. Is nightmare more peaceful than dream?
+13,dream is more peaceful than nightmare. Is nightmare less peaceful than dream?
+13,dream is more peaceful than nightmare. Is dream more peaceful than nightmare?
+13,dream is more peaceful than nightmare. Is dream less peaceful than nightmare?
+13,dream is less peaceful than nightmare. Is nightmare more peaceful than dream?
+13,dream is less peaceful than nightmare. Is nightmare less peaceful than dream?
+13,dream is less peaceful than nightmare. Is dream more peaceful than nightmare?
+13,dream is less peaceful than nightmare. Is dream less peaceful than nightmare?
+15,clouds is more useful than paper. Is clouds more useful than paper?
+15,clouds is more useful than paper. Is clouds less useful than paper?
+15,clouds is more useful than paper. Is paper more useful than clouds?
+15,clouds is more useful than paper. Is paper less useful than clouds?
+15,clouds is less useful than paper. Is clouds more useful than paper?
+15,clouds is less useful than paper. Is clouds less useful than paper?
+15,clouds is less useful than paper. Is paper more useful than clouds?
+15,clouds is less useful than paper. Is paper less useful than clouds?
+15,paper is more useful than clouds. Is clouds more useful than paper?
+15,paper is more useful than clouds. Is clouds less useful than paper?
+15,paper is more useful than clouds. Is paper more useful than clouds?
+15,paper is more useful than clouds. Is paper less useful than clouds?
+15,paper is less useful than clouds. Is clouds more useful than paper?
+15,paper is less useful than clouds. Is clouds less useful than paper?
+15,paper is less useful than clouds. Is paper more useful than clouds?
+15,paper is less useful than clouds. Is paper less useful than clouds?
+17,fire is more wet than rain. Is fire more wet than rain?
+17,fire is more wet than rain. Is fire less wet than rain?
+17,fire is more wet than rain. Is rain more wet than fire?
+17,fire is more wet than rain. Is rain less wet than fire?
+17,fire is less wet than rain. Is fire more wet than rain?
+17,fire is less wet than rain. Is fire less wet than rain?
+17,fire is less wet than rain. Is rain more wet than fire?
+17,fire is less wet than rain. Is rain less wet than fire?
+17,rain is more wet than fire. Is fire more wet than rain?
+17,rain is more wet than fire. Is fire less wet than rain?
+17,rain is more wet than fire. Is rain more wet than fire?
+17,rain is more wet than fire. Is rain less wet than fire?
+17,rain is less wet than fire. Is fire more wet than rain?
+17,rain is less wet than fire. Is fire less wet than rain?
+17,rain is less wet than fire. Is rain more wet than fire?
+17,rain is less wet than fire. Is rain less wet than fire?
+19,weeds are more beautiful than roses. Are weeds more beautiful than roses?
+19,weeds are more beautiful than roses. Are weeds less beautiful than roses?
+19,weeds are more beautiful than roses. Are roses more beautiful than weeds?
+19,weeds are more beautiful than roses. Are roses less beautiful than weeds?
+19,weeds are less beautiful than roses. Are weeds more beautiful than roses?
+19,weeds are less beautiful than roses. Are weeds less beautiful than roses?
+19,weeds are less beautiful than roses. Are roses more beautiful than weeds?
+19,weeds are less beautiful than roses. Are roses less beautiful than weeds?
+19,roses are more beautiful than weeds. Are weeds more beautiful than roses?
+19,roses are more beautiful than weeds. Are weeds less beautiful than roses?
+19,roses are more beautiful than weeds. Are roses more beautiful than weeds?
+19,roses are more beautiful than weeds. Are roses less beautiful than weeds?
+19,roses are less beautiful than weeds. Are weeds more beautiful than roses?
+19,roses are less beautiful than weeds. Are weeds less beautiful than roses?
+19,roses are less beautiful than weeds. Are roses more beautiful than weeds?
+19,roses are less beautiful than weeds. Are roses less beautiful than weeds?
+21,Sahara desert is hotter than Arctic. Is Sahara desert hotter than Arctic?
+21,Sahara desert is hotter than Arctic. Is Sahara desert colder than Arctic?
+21,Sahara desert is hotter than Arctic. Is Arctic hotter than Sahara desert?
+21,Sahara desert is hotter than Arctic. Is Arctic colder than Sahara desert?
+21,Sahara desert is colder than Arctic. Is Sahara desert hotter than Arctic?
+21,Sahara desert is colder than Arctic. Is Sahara desert colder than Arctic?
+21,Sahara desert is colder than Arctic. Is Arctic hotter than Sahara desert?
+21,Sahara desert is colder than Arctic. Is Arctic colder than Sahara desert?
+21,Arctic is hotter than Sahara desert. Is Sahara desert hotter than Arctic?
+21,Arctic is hotter than Sahara desert. Is Sahara desert colder than Arctic?
+21,Arctic is hotter than Sahara desert. Is Arctic hotter than Sahara desert?
+21,Arctic is hotter than Sahara desert. Is Arctic colder than Sahara desert?
+21,Arctic is colder than Sahara desert. Is Sahara desert hotter than Arctic?
+21,Arctic is colder than Sahara desert. Is Sahara desert colder than Arctic?
+21,Arctic is colder than Sahara desert. Is Arctic hotter than Sahara desert?
+21,Arctic is colder than Sahara desert. Is Arctic colder than Sahara desert?
+23,war is better than peace. Is war better than peace?
+23,war is better than peace. Is war worse than peace?
+23,war is better than peace. Is peace better than war?
+23,war is better than peace. Is peace worse than war?
+23,war is worse than peace. Is war better than peace?
+23,war is worse than peace. Is war worse than peace?
+23,war is worse than peace. Is peace better than war?
+23,war is worse than peace. Is peace worse than war?
+23,peace is better than war. Is war better than peace?
+23,peace is better than war. Is war worse than peace?
+23,peace is better than war. Is peace better than war?
+23,peace is better than war. Is peace worse than war?
+23,peace is worse than war. Is war better than peace?
+23,peace is worse than war. Is war worse than peace?
+23,peace is worse than war. Is peace better than war?
+23,peace is worse than war. Is peace worse than war?
+25,Earth is bigger than Jupiter. Is Earth bigger than Jupiter?
+25,Earth is bigger than Jupiter. Is Earth smaller than Jupiter?
+25,Earth is bigger than Jupiter. Is Jupiter bigger than Earth?
+25,Earth is bigger than Jupiter. Is Jupiter smaller than Earth?
+25,Earth is smaller than Jupiter. Is Earth bigger than Jupiter?
+25,Earth is smaller than Jupiter. Is Earth smaller than Jupiter?
+25,Earth is smaller than Jupiter. Is Jupiter bigger than Earth?
+25,Earth is smaller than Jupiter. Is Jupiter smaller than Earth?
+25,Jupiter is bigger than Earth. Is Earth bigger than Jupiter?
+25,Jupiter is bigger than Earth. Is Earth smaller than Jupiter?
+25,Jupiter is bigger than Earth. Is Jupiter bigger than Earth?
+25,Jupiter is bigger than Earth. Is Jupiter smaller than Earth?
+25,Jupiter is smaller than Earth. Is Earth bigger than Jupiter?
+25,Jupiter is smaller than Earth. Is Earth smaller than Jupiter?
+25,Jupiter is smaller than Earth. Is Jupiter bigger than Earth?
+25,Jupiter is smaller than Earth. Is Jupiter smaller than Earth?
+27,summer is colder than winter. Is summer colder than winter?
+27,summer is colder than winter. Is summer hotter than winter?
+27,summer is colder than winter. Is winter colder than summer?
+27,summer is colder than winter. Is winter hotter than summer?
+27,summer is hotter than winter. Is summer colder than winter?
+27,summer is hotter than winter. Is summer hotter than winter?
+27,summer is hotter than winter. Is winter colder than summer?
+27,summer is hotter than winter. Is winter hotter than summer?
+27,winter is colder than summer. Is summer colder than winter?
+27,winter is colder than summer. Is summer hotter than winter?
+27,winter is colder than summer. Is winter colder than summer?
+27,winter is colder than summer. Is winter hotter than summer?
+27,winter is hotter than summer. Is summer colder than winter?
+27,winter is hotter than summer. Is summer hotter than winter?
+27,winter is hotter than summer. Is winter colder than summer?
+27,winter is hotter than summer. Is winter hotter than summer?
+29,lakes are bigger than oceans. Are lakes bigger than oceans?
+29,lakes are bigger than oceans. Are lakes smaller than oceans?
+29,lakes are bigger than oceans. Are oceans bigger than lakes?
+29,lakes are bigger than oceans. Are oceans smaller than lakes?
+29,lakes are smaller than oceans. Are lakes bigger than oceans?
+29,lakes are smaller than oceans. Are lakes smaller than oceans?
+29,lakes are smaller than oceans. Are oceans bigger than lakes?
+29,lakes are smaller than oceans. Are oceans smaller than lakes?
+29,oceans are bigger than lakes. Are lakes bigger than oceans?
+29,oceans are bigger than lakes. Are lakes smaller than oceans?
+29,oceans are bigger than lakes. Are oceans bigger than lakes?
+29,oceans are bigger than lakes. Are oceans smaller than lakes?
+29,oceans are smaller than lakes. Are lakes bigger than oceans?
+29,oceans are smaller than lakes. Are lakes smaller than oceans?
+29,oceans are smaller than lakes. Are oceans bigger than lakes?
+29,oceans are smaller than lakes. Are oceans smaller than lakes?
+31,darkness is brighter than light. Is darkness brighter than light?
+31,darkness is brighter than light. Is darkness darker than light?
+31,darkness is brighter than light. Is light brighter than darkness?
+31,darkness is brighter than light. Is light darker than darkness?
+31,darkness is darker than light. Is darkness brighter than light?
+31,darkness is darker than light. Is darkness darker than light?
+31,darkness is darker than light. Is light brighter than darkness?
+31,darkness is darker than light. Is light darker than darkness?
+31,light is brighter than darkness. Is darkness brighter than light?
+31,light is brighter than darkness. Is darkness darker than light?
+31,light is brighter than darkness. Is light brighter than darkness?
+31,light is brighter than darkness. Is light darker than darkness?
+31,light is darker than darkness. Is darkness brighter than light?
+31,light is darker than darkness. Is darkness darker than light?
+31,light is darker than darkness. Is light brighter than darkness?
+31,light is darker than darkness. Is light darker than darkness?
+33,Japan is bigger than America. Is Japan bigger than America?
+33,Japan is bigger than America. Is Japan smaller than America?
+33,Japan is bigger than America. Is America bigger than Japan?
+33,Japan is bigger than America. Is America smaller than Japan?
+33,Japan is smaller than America. Is Japan bigger than America?
+33,Japan is smaller than America. Is Japan smaller than America?
+33,Japan is smaller than America. Is America bigger than Japan?
+33,Japan is smaller than America. Is America smaller than Japan?
+33,America is bigger than Japan. Is Japan bigger than America?
+33,America is bigger than Japan. Is Japan smaller than America?
+33,America is bigger than Japan. Is America bigger than Japan?
+33,America is bigger than Japan. Is America smaller than Japan?
+33,America is smaller than Japan. Is Japan bigger than America?
+33,America is smaller than Japan. Is Japan smaller than America?
+33,America is smaller than Japan. Is America bigger than Japan?
+33,America is smaller than Japan. Is America smaller than Japan?
+35,ants are prettier than butterflies. Are ants prettier than butterflies?
+35,ants are prettier than butterflies. Are ants uglier than butterflies?
+35,ants are prettier than butterflies. Are butterflies prettier than ants?
+35,ants are prettier than butterflies. Are butterflies uglier than ants?
+35,ants are uglier than butterflies. Are ants prettier than butterflies?
+35,ants are uglier than butterflies. Are ants uglier than butterflies?
+35,ants are uglier than butterflies. Are butterflies prettier than ants?
+35,ants are uglier than butterflies. Are butterflies uglier than ants?
+35,butterflies are prettier than ants. Are ants prettier than butterflies?
+35,butterflies are prettier than ants. Are ants uglier than butterflies?
+35,butterflies are prettier than ants. Are butterflies prettier than ants?
+35,butterflies are prettier than ants. Are butterflies uglier than ants?
+35,butterflies are uglier than ants. Are ants prettier than butterflies?
+35,butterflies are uglier than ants. Are ants uglier than butterflies?
+35,butterflies are uglier than ants. Are butterflies prettier than ants?
+35,butterflies are uglier than ants. Are butterflies uglier than ants?
+37,rain is colder than snow. Is rain colder than snow?
+37,rain is colder than snow. Is rain hotter than snow?
+37,rain is colder than snow. Is snow colder than rain?
+37,rain is colder than snow. Is snow hotter than rain?
+37,rain is hotter than snow. Is rain colder than snow?
+37,rain is hotter than snow. Is rain hotter than snow?
+37,rain is hotter than snow. Is snow colder than rain?
+37,rain is hotter than snow. Is snow hotter than rain?
+37,snow is colder than rain. Is rain colder than snow?
+37,snow is colder than rain. Is rain hotter than snow?
+37,snow is colder than rain. Is snow colder than rain?
+37,snow is colder than rain. Is snow hotter than rain?
+37,snow is hotter than rain. Is rain colder than snow?
+37,snow is hotter than rain. Is rain hotter than snow?
+37,snow is hotter than rain. Is snow colder than rain?
+37,snow is hotter than rain. Is snow hotter than rain?
+39,shrubs are taller than trees. Are shrubs taller than trees?
+39,shrubs are taller than trees. Are shrubs shorter than trees?
+39,shrubs are taller than trees. Are trees taller than shrubs?
+39,shrubs are taller than trees. Are trees shorter than shrubs?
+39,shrubs are shorter than trees. Are shrubs taller than trees?
+39,shrubs are shorter than trees. Are shrubs shorter than trees?
+39,shrubs are shorter than trees. Are trees taller than shrubs?
+39,shrubs are shorter than trees. Are trees shorter than shrubs?
+39,trees are taller than shrubs. Are shrubs taller than trees?
+39,trees are taller than shrubs. Are shrubs shorter than trees?
+39,trees are taller than shrubs. Are trees taller than shrubs?
+39,trees are taller than shrubs. Are trees shorter than shrubs?
+39,trees are shorter than shrubs. Are shrubs taller than trees?
+39,trees are shorter than shrubs. Are shrubs shorter than trees?
+39,trees are shorter than shrubs. Are trees taller than shrubs?
+39,trees are shorter than shrubs. Are trees shorter than shrubs?
+41,water is colder than ice. Is water colder than ice?
+41,water is colder than ice. Is water hotter than ice?
+41,water is colder than ice. Is ice colder than water?
+41,water is colder than ice. Is ice hotter than water?
+41,water is hotter than ice. Is water colder than ice?
+41,water is hotter than ice. Is water hotter than ice?
+41,water is hotter than ice. Is ice colder than water?
+41,water is hotter than ice. Is ice hotter than water?
+41,ice is colder than water. Is water colder than ice?
+41,ice is colder than water. Is water hotter than ice?
+41,ice is colder than water. Is ice colder than water?
+41,ice is colder than water. Is ice hotter than water?
+41,ice is hotter than water. Is water colder than ice?
+41,ice is hotter than water. Is water hotter than ice?
+41,ice is hotter than water. Is ice colder than water?
+41,ice is hotter than water. Is ice hotter than water?
+43,hills are higher than mountains. Are hills higher than mountains?
+43,hills are higher than mountains. Are hills shorter than mountains?
+43,hills are higher than mountains. Are mountains higher than hills?
+43,hills are higher than mountains. Are mountains shorter than hills?
+43,hills are shorter than mountains. Are hills higher than mountains?
+43,hills are shorter than mountains. Are hills shorter than mountains?
+43,hills are shorter than mountains. Are mountains higher than hills?
+43,hills are shorter than mountains. Are mountains shorter than hills?
+43,mountains are higher than hills. Are hills higher than mountains?
+43,mountains are higher than hills. Are hills shorter than mountains?
+43,mountains are higher than hills. Are mountains higher than hills?
+43,mountains are higher than hills. Are mountains shorter than hills?
+43,mountains are shorter than hills. Are hills higher than mountains?
+43,mountains are shorter than hills. Are hills shorter than mountains?
+43,mountains are shorter than hills. Are mountains higher than hills?
+43,mountains are shorter than hills. Are mountains shorter than hills?
+45,children are bigger than adults. Are children bigger than adults?
+45,children are bigger than adults. Are children smaller than adults?
+45,children are bigger than adults. Are adults bigger than children?
+45,children are bigger than adults. Are adults smaller than children?
+45,children are smaller than adults. Are children bigger than adults?
+45,children are smaller than adults. Are children smaller than adults?
+45,children are smaller than adults. Are adults bigger than children?
+45,children are smaller than adults. Are adults smaller than children?
+45,adults are bigger than children. Are children bigger than adults?
+45,adults are bigger than children. Are children smaller than adults?
+45,adults are bigger than children. Are adults bigger than children?
+45,adults are bigger than children. Are adults smaller than children?
+45,adults are smaller than children. Are children bigger than adults?
+45,adults are smaller than children. Are children smaller than adults?
+45,adults are smaller than children. Are adults bigger than children?
+45,adults are smaller than children. Are adults smaller than children?
+47,snakes are less scary than lizards. Are snakes less scary than lizards?
+47,snakes are less scary than lizards. Are snakes less scary than lizards?
+47,snakes are less scary than lizards. Are lizards less scary than snakes?
+47,snakes are less scary than lizards. Are lizards less scary than snakes?
+47,snakes are less scary than lizards. Are snakes less scary than lizards?
+47,snakes are less scary than lizards. Are snakes less scary than lizards?
+47,snakes are less scary than lizards. Are lizards less scary than snakes?
+47,snakes are less scary than lizards. Are lizards less scary than snakes?
+47,lizards are less scary than snakes. Are snakes less scary than lizards?
+47,lizards are less scary than snakes. Are snakes less scary than lizards?
+47,lizards are less scary than snakes. Are lizards less scary than snakes?
+47,lizards are less scary than snakes. Are lizards less scary than snakes?
+47,lizards are less scary than snakes. Are snakes less scary than lizards?
+47,lizards are less scary than snakes. Are snakes less scary than lizards?
+47,lizards are less scary than snakes. Are lizards less scary than snakes?
+47,lizards are less scary than snakes. Are lizards less scary than snakes?
+49,turtles are faster than wolves. Are turtles faster than wolves?
+49,turtles are faster than wolves. Are turtles slower than wolves?
+49,turtles are faster than wolves. Are wolves faster than turtles?
+49,turtles are faster than wolves. Are wolves slower than turtles?
+49,turtles are slower than wolves. Are turtles faster than wolves?
+49,turtles are slower than wolves. Are turtles slower than wolves?
+49,turtles are slower than wolves. Are wolves faster than turtles?
+49,turtles are slower than wolves. Are wolves slower than turtles?
+49,wolves are faster than turtles. Are turtles faster than wolves?
+49,wolves are faster than turtles. Are turtles slower than wolves?
+49,wolves are faster than turtles. Are wolves faster than turtles?
+49,wolves are faster than turtles. Are wolves slower than turtles?
+49,wolves are slower than turtles. Are turtles faster than wolves?
+49,wolves are slower than turtles. Are turtles slower than wolves?
+49,wolves are slower than turtles. Are wolves faster than turtles?
+49,wolves are slower than turtles. Are wolves slower than turtles?
+51,winter is hotter than summer. Is winter hotter than summer?
+51,winter is hotter than summer. Is winter colder than summer?
+51,winter is hotter than summer. Is summer hotter than winter?
+51,winter is hotter than summer. Is summer colder than winter?
+51,winter is colder than summer. Is winter hotter than summer?
+51,winter is colder than summer. Is winter colder than summer?
+51,winter is colder than summer. Is summer hotter than winter?
+51,winter is colder than summer. Is summer colder than winter?
+51,summer is hotter than winter. Is winter hotter than summer?
+51,summer is hotter than winter. Is winter colder than summer?
+51,summer is hotter than winter. Is summer hotter than winter?
+51,summer is hotter than winter. Is summer colder than winter?
+51,summer is colder than winter. Is winter hotter than summer?
+51,summer is colder than winter. Is winter colder than summer?
+51,summer is colder than winter. Is summer hotter than winter?
+51,summer is colder than winter. Is summer colder than winter?
+53,leaves are heavier than books. Are leaves heavier than books?
+53,leaves are heavier than books. Are leaves lighter than books?
+53,leaves are heavier than books. Are books heavier than leaves?
+53,leaves are heavier than books. Are books lighter than leaves?
+53,leaves are lighter than books. Are leaves heavier than books?
+53,leaves are lighter than books. Are leaves lighter than books?
+53,leaves are lighter than books. Are books heavier than leaves?
+53,leaves are lighter than books. Are books lighter than leaves?
+53,books are heavier than leaves. Are leaves heavier than books?
+53,books are heavier than leaves. Are leaves lighter than books?
+53,books are heavier than leaves. Are books heavier than leaves?
+53,books are heavier than leaves. Are books lighter than leaves?
+53,books are lighter than leaves. Are leaves heavier than books?
+53,books are lighter than leaves. Are leaves lighter than books?
+53,books are lighter than leaves. Are books heavier than leaves?
+53,books are lighter than leaves. Are books lighter than leaves?
+55,broccoli is sweeter than candy. Is broccoli sweeter than candy?
+55,broccoli is sweeter than candy. Is broccoli less sweet than candy?
+55,broccoli is sweeter than candy. Is candy sweeter than broccoli?
+55,broccoli is sweeter than candy. Is candy less sweet than broccoli?
+55,broccoli is less sweet than candy. Is broccoli sweeter than candy?
+55,broccoli is less sweet than candy. Is broccoli less sweet than candy?
+55,broccoli is less sweet than candy. Is candy sweeter than broccoli?
+55,broccoli is less sweet than candy. Is candy less sweet than broccoli?
+55,candy is sweeter than broccoli. Is broccoli sweeter than candy?
+55,candy is sweeter than broccoli. Is broccoli less sweet than candy?
+55,candy is sweeter than broccoli. Is candy sweeter than broccoli?
+55,candy is sweeter than broccoli. Is candy less sweet than broccoli?
+55,candy is less sweet than broccoli. Is broccoli sweeter than candy?
+55,candy is less sweet than broccoli. Is broccoli less sweet than candy?
+55,candy is less sweet than broccoli. Is candy sweeter than broccoli?
+55,candy is less sweet than broccoli. Is candy less sweet than broccoli?
+57,trees are taller than skyscrapers. Are trees taller than skyscrapers?
+57,trees are taller than skyscrapers. Are trees shorter than skyscrapers?
+57,trees are taller than skyscrapers. Are skyscrapers taller than trees?
+57,trees are taller than skyscrapers. Are skyscrapers shorter than trees?
+57,trees are shorter than skyscrapers. Are trees taller than skyscrapers?
+57,trees are shorter than skyscrapers. Are trees shorter than skyscrapers?
+57,trees are shorter than skyscrapers. Are skyscrapers taller than trees?
+57,trees are shorter than skyscrapers. Are skyscrapers shorter than trees?
+57,skyscrapers are taller than trees. Are trees taller than skyscrapers?
+57,skyscrapers are taller than trees. Are trees shorter than skyscrapers?
+57,skyscrapers are taller than trees. Are skyscrapers taller than trees?
+57,skyscrapers are taller than trees. Are skyscrapers shorter than trees?
+57,skyscrapers are shorter than trees. Are trees taller than skyscrapers?
+57,skyscrapers are shorter than trees. Are trees shorter than skyscrapers?
+57,skyscrapers are shorter than trees. Are skyscrapers taller than trees?
+57,skyscrapers are shorter than trees. Are skyscrapers shorter than trees?
+59,dry is more wet than water. Is dry more wet than water?
+59,dry is more wet than water. Is dry less wet than water?
+59,dry is more wet than water. Is water more wet than dry?
+59,dry is more wet than water. Is water less wet than dry?
+59,dry is less wet than water. Is dry more wet than water?
+59,dry is less wet than water. Is dry less wet than water?
+59,dry is less wet than water. Is water more wet than dry?
+59,dry is less wet than water. Is water less wet than dry?
+59,water is more wet than dry. Is dry more wet than water?
+59,water is more wet than dry. Is dry less wet than water?
+59,water is more wet than dry. Is water more wet than dry?
+59,water is more wet than dry. Is water less wet than dry?
+59,water is less wet than dry. Is dry more wet than water?
+59,water is less wet than dry. Is dry less wet than water?
+59,water is less wet than dry. Is water more wet than dry?
+59,water is less wet than dry. Is water less wet than dry?
+61,ice is more hot than fire. Is ice more hot than fire?
+61,ice is more hot than fire. Is ice less hot than fire?
+61,ice is more hot than fire. Is fire more hot than ice?
+61,ice is more hot than fire. Is fire less hot than ice?
+61,ice is less hot than fire. Is ice more hot than fire?
+61,ice is less hot than fire. Is ice less hot than fire?
+61,ice is less hot than fire. Is fire more hot than ice?
+61,ice is less hot than fire. Is fire less hot than ice?
+61,fire is more hot than ice. Is ice more hot than fire?
+61,fire is more hot than ice. Is ice less hot than fire?
+61,fire is more hot than ice. Is fire more hot than ice?
+61,fire is more hot than ice. Is fire less hot than ice?
+61,fire is less hot than ice. Is ice more hot than fire?
+61,fire is less hot than ice. Is ice less hot than fire?
+61,fire is less hot than ice. Is fire more hot than ice?
+61,fire is less hot than ice. Is fire less hot than ice?
+63,paper is harder than wood. Is paper harder than wood?
+63,paper is harder than wood. Is paper softer than wood?
+63,paper is harder than wood. Is wood harder than paper?
+63,paper is harder than wood. Is wood softer than paper?
+63,paper is softer than wood. Is paper harder than wood?
+63,paper is softer than wood. Is paper softer than wood?
+63,paper is softer than wood. Is wood harder than paper?
+63,paper is softer than wood. Is wood softer than paper?
+63,wood is harder than paper. Is paper harder than wood?
+63,wood is harder than paper. Is paper softer than wood?
+63,wood is harder than paper. Is wood harder than paper?
+63,wood is harder than paper. Is wood softer than paper?
+63,wood is softer than paper. Is paper harder than wood?
+63,wood is softer than paper. Is paper softer than wood?
+63,wood is softer than paper. Is wood harder than paper?
+63,wood is softer than paper. Is wood softer than paper?
+65,daisies are more beautiful than roses. Are daisies more beautiful than roses?
+65,daisies are more beautiful than roses. Are daisies less beautiful than roses?
+65,daisies are more beautiful than roses. Are roses more beautiful than daisies?
+65,daisies are more beautiful than roses. Are roses less beautiful than daisies?
+65,daisies are less beautiful than roses. Are daisies more beautiful than roses?
+65,daisies are less beautiful than roses. Are daisies less beautiful than roses?
+65,daisies are less beautiful than roses. Are roses more beautiful than daisies?
+65,daisies are less beautiful than roses. Are roses less beautiful than daisies?
+65,roses are more beautiful than daisies. Are daisies more beautiful than roses?
+65,roses are more beautiful than daisies. Are daisies less beautiful than roses?
+65,roses are more beautiful than daisies. Are roses more beautiful than daisies?
+65,roses are more beautiful than daisies. Are roses less beautiful than daisies?
+65,roses are less beautiful than daisies. Are daisies more beautiful than roses?
+65,roses are less beautiful than daisies. Are daisies less beautiful than roses?
+65,roses are less beautiful than daisies. Are roses more beautiful than daisies?
+65,roses are less beautiful than daisies. Are roses less beautiful than daisies?
+67,snakes are slimier than lizards. Are snakes slimier than lizards?
+67,snakes are slimier than lizards. Are snakes drier than lizards?
+67,snakes are slimier than lizards. Are lizards slimier than snakes?
+67,snakes are slimier than lizards. Are lizards drier than snakes?
+67,snakes are drier than lizards. Are snakes slimier than lizards?
+67,snakes are drier than lizards. Are snakes drier than lizards?
+67,snakes are drier than lizards. Are lizards slimier than snakes?
+67,snakes are drier than lizards. Are lizards drier than snakes?
+67,lizards are slimier than snakes. Are snakes slimier than lizards?
+67,lizards are slimier than snakes. Are snakes drier than lizards?
+67,lizards are slimier than snakes. Are lizards slimier than snakes?
+67,lizards are slimier than snakes. Are lizards drier than snakes?
+67,lizards are drier than snakes. Are snakes slimier than lizards?
+67,lizards are drier than snakes. Are snakes drier than lizards?
+67,lizards are drier than snakes. Are lizards slimier than snakes?
+67,lizards are drier than snakes. Are lizards drier than snakes?
+69,rain is louder than thunder. Is rain louder than thunder?
+69,rain is louder than thunder. Is rain quieter than thunder?
+69,rain is louder than thunder. Is thunder louder than rain?
+69,rain is louder than thunder. Is thunder quieter than rain?
+69,rain is quieter than thunder. Is rain louder than thunder?
+69,rain is quieter than thunder. Is rain quieter than thunder?
+69,rain is quieter than thunder. Is thunder louder than rain?
+69,rain is quieter than thunder. Is thunder quieter than rain?
+69,thunder is louder than rain. Is rain louder than thunder?
+69,thunder is louder than rain. Is rain quieter than thunder?
+69,thunder is louder than rain. Is thunder louder than rain?
+69,thunder is louder than rain. Is thunder quieter than rain?
+69,thunder is quieter than rain. Is rain louder than thunder?
+69,thunder is quieter than rain. Is rain quieter than thunder?
+69,thunder is quieter than rain. Is thunder louder than rain?
+69,thunder is quieter than rain. Is thunder quieter than rain?
+71,librarians are funnier than clowns. Are librarians funnier than clowns?
+71,librarians are funnier than clowns. Are librarians less funny than clowns?
+71,librarians are funnier than clowns. Are clowns funnier than librarians?
+71,librarians are funnier than clowns. Are clowns less funny than librarians?
+71,librarians are less funny than clowns. Are librarians funnier than clowns?
+71,librarians are less funny than clowns. Are librarians less funny than clowns?
+71,librarians are less funny than clowns. Are clowns funnier than librarians?
+71,librarians are less funny than clowns. Are clowns less funny than librarians?
+71,clowns are funnier than librarians. Are librarians funnier than clowns?
+71,clowns are funnier than librarians. Are librarians less funny than clowns?
+71,clowns are funnier than librarians. Are clowns funnier than librarians?
+71,clowns are funnier than librarians. Are clowns less funny than librarians?
+71,clowns are less funny than librarians. Are librarians funnier than clowns?
+71,clowns are less funny than librarians. Are librarians less funny than clowns?
+71,clowns are less funny than librarians. Are clowns funnier than librarians?
+71,clowns are less funny than librarians. Are clowns less funny than librarians?
+73,dogs are slower than hens. Are dogs slower than hens?
+73,dogs are slower than hens. Are dogs faster than hens?
+73,dogs are slower than hens. Are hens slower than dogs?
+73,dogs are slower than hens. Are hens faster than dogs?
+73,dogs are faster than hens. Are dogs slower than hens?
+73,dogs are faster than hens. Are dogs faster than hens?
+73,dogs are faster than hens. Are hens slower than dogs?
+73,dogs are faster than hens. Are hens faster than dogs?
+73,hens are slower than dogs. Are dogs slower than hens?
+73,hens are slower than dogs. Are dogs faster than hens?
+73,hens are slower than dogs. Are hens slower than dogs?
+73,hens are slower than dogs. Are hens faster than dogs?
+73,hens are faster than dogs. Are dogs slower than hens?
+73,hens are faster than dogs. Are dogs faster than hens?
+73,hens are faster than dogs. Are hens slower than dogs?
+73,hens are faster than dogs. Are hens faster than dogs?
+75,cars are cuter than dogs. Are cars cuter than dogs?
+75,cars are cuter than dogs. Are cars less cute than dogs?
+75,cars are cuter than dogs. Are dogs cuter than cars?
+75,cars are cuter than dogs. Are dogs less cute than cars?
+75,cars are less cute than dogs. Are cars cuter than dogs?
+75,cars are less cute than dogs. Are cars less cute than dogs?
+75,cars are less cute than dogs. Are dogs cuter than cars?
+75,cars are less cute than dogs. Are dogs less cute than cars?
+75,dogs are cuter than cars. Are cars cuter than dogs?
+75,dogs are cuter than cars. Are cars less cute than dogs?
+75,dogs are cuter than cars. Are dogs cuter than cars?
+75,dogs are cuter than cars. Are dogs less cute than cars?
+75,dogs are less cute than cars. Are cars cuter than dogs?
+75,dogs are less cute than cars. Are cars less cute than dogs?
+75,dogs are less cute than cars. Are dogs cuter than cars?
+75,dogs are less cute than cars. Are dogs less cute than cars?
+77,snow are fluffier than clouds. Is snow fluffier than clouds?
+77,snow are fluffier than clouds. Is snow less fluffy than clouds?
+77,snow are fluffier than clouds. Are clouds fluffier than snow?
+77,snow are fluffier than clouds. Are clouds less fluffy than snow?
+77,snow are less fluffy than clouds. Is snow fluffier than clouds?
+77,snow are less fluffy than clouds. Is snow less fluffy than clouds?
+77,snow are less fluffy than clouds. Are clouds fluffier than snow?
+77,snow are less fluffy than clouds. Are clouds less fluffy than snow?
+77,clouds are fluffier than snow. Is snow fluffier than clouds?
+77,clouds are fluffier than snow. Is snow less fluffy than clouds?
+77,clouds are fluffier than snow. Are clouds fluffier than snow?
+77,clouds are fluffier than snow. Are clouds less fluffy than snow?
+77,clouds are less fluffy than snow. Is snow fluffier than clouds?
+77,clouds are less fluffy than snow. Is snow less fluffy than clouds?
+77,clouds are less fluffy than snow. Are clouds fluffier than snow?
+77,clouds are less fluffy than snow. Are clouds less fluffy than snow?
+79,roses are more hairy than spiders. Are roses more hairy than spiders?
+79,roses are more hairy than spiders. Are roses less hairy than spiders?
+79,roses are more hairy than spiders. Are spiders more hairy than roses?
+79,roses are more hairy than spiders. Are spiders less hairy than roses?
+79,roses are less hairy than spiders. Are roses more hairy than spiders?
+79,roses are less hairy than spiders. Are roses less hairy than spiders?
+79,roses are less hairy than spiders. Are spiders more hairy than roses?
+79,roses are less hairy than spiders. Are spiders less hairy than roses?
+79,spiders are more hairy than roses. Are roses more hairy than spiders?
+79,spiders are more hairy than roses. Are roses less hairy than spiders?
+79,spiders are more hairy than roses. Are spiders more hairy than roses?
+79,spiders are more hairy than roses. Are spiders less hairy than roses?
+79,spiders are less hairy than roses. Are roses more hairy than spiders?
+79,spiders are less hairy than roses. Are roses less hairy than spiders?
+79,spiders are less hairy than roses. Are spiders more hairy than roses?
+79,spiders are less hairy than roses. Are spiders less hairy than roses?
+81,roses are bigger than apples. Are roses bigger than apples?
+81,roses are bigger than apples. Are roses smaller than apples?
+81,roses are bigger than apples. Are apples bigger than roses?
+81,roses are bigger than apples. Are apples smaller than roses?
+81,roses are smaller than apples. Are roses bigger than apples?
+81,roses are smaller than apples. Are roses smaller than apples?
+81,roses are smaller than apples. Are apples bigger than roses?
+81,roses are smaller than apples. Are apples smaller than roses?
+81,apples are bigger than roses. Are roses bigger than apples?
+81,apples are bigger than roses. Are roses smaller than apples?
+81,apples are bigger than roses. Are apples bigger than roses?
+81,apples are bigger than roses. Are apples smaller than roses?
+81,apples are smaller than roses. Are roses bigger than apples?
+81,apples are smaller than roses. Are roses smaller than apples?
+81,apples are smaller than roses. Are apples bigger than roses?
+81,apples are smaller than roses. Are apples smaller than roses?
+83,dogs are smaller than cats. Are dogs smaller than cats?
+83,dogs are smaller than cats. Are dogs bigger than cats?
+83,dogs are smaller than cats. Are cats smaller than dogs?
+83,dogs are smaller than cats. Are cats bigger than dogs?
+83,dogs are bigger than cats. Are dogs smaller than cats?
+83,dogs are bigger than cats. Are dogs bigger than cats?
+83,dogs are bigger than cats. Are cats smaller than dogs?
+83,dogs are bigger than cats. Are cats bigger than dogs?
+83,cats are smaller than dogs. Are dogs smaller than cats?
+83,cats are smaller than dogs. Are dogs bigger than cats?
+83,cats are smaller than dogs. Are cats smaller than dogs?
+83,cats are smaller than dogs. Are cats bigger than dogs?
+83,cats are bigger than dogs. Are dogs smaller than cats?
+83,cats are bigger than dogs. Are dogs bigger than cats?
+83,cats are bigger than dogs. Are cats smaller than dogs?
+83,cats are bigger than dogs. Are cats bigger than dogs?
+85,squares are rounder than balls. Are squares rounder than balls?
+85,squares are rounder than balls. Are squares less round than balls?
+85,squares are rounder than balls. Are balls rounder than squares?
+85,squares are rounder than balls. Are balls less round than squares?
+85,squares are less round than balls. Are squares rounder than balls?
+85,squares are less round than balls. Are squares less round than balls?
+85,squares are less round than balls. Are balls rounder than squares?
+85,squares are less round than balls. Are balls less round than squares?
+85,balls are rounder than squares. Are squares rounder than balls?
+85,balls are rounder than squares. Are squares less round than balls?
+85,balls are rounder than squares. Are balls rounder than squares?
+85,balls are rounder than squares. Are balls less round than squares?
+85,balls are less round than squares. Are squares rounder than balls?
+85,balls are less round than squares. Are squares less round than balls?
+85,balls are less round than squares. Are balls rounder than squares?
+85,balls are less round than squares. Are balls less round than squares?
+87,oranges are more sweet than grapes. Are oranges more sweet than grapes?
+87,oranges are more sweet than grapes. Are oranges less sweet than grapes?
+87,oranges are more sweet than grapes. Are grapes more sweet than oranges?
+87,oranges are more sweet than grapes. Are grapes less sweet than oranges?
+87,oranges are less sweet than grapes. Are oranges more sweet than grapes?
+87,oranges are less sweet than grapes. Are oranges less sweet than grapes?
+87,oranges are less sweet than grapes. Are grapes more sweet than oranges?
+87,oranges are less sweet than grapes. Are grapes less sweet than oranges?
+87,grapes are more sweet than oranges. Are oranges more sweet than grapes?
+87,grapes are more sweet than oranges. Are oranges less sweet than grapes?
+87,grapes are more sweet than oranges. Are grapes more sweet than oranges?
+87,grapes are more sweet than oranges. Are grapes less sweet than oranges?
+87,grapes are less sweet than oranges. Are oranges more sweet than grapes?
+87,grapes are less sweet than oranges. Are oranges less sweet than grapes?
+87,grapes are less sweet than oranges. Are grapes more sweet than oranges?
+87,grapes are less sweet than oranges. Are grapes less sweet than oranges?
+89,shoes are taller than chairs. Are shoes taller than chairs?
+89,shoes are taller than chairs. Are shoes shorter than chairs?
+89,shoes are taller than chairs. Are chairs taller than shoes?
+89,shoes are taller than chairs. Are chairs shorter than shoes?
+89,shoes are shorter than chairs. Are shoes taller than chairs?
+89,shoes are shorter than chairs. Are shoes shorter than chairs?
+89,shoes are shorter than chairs. Are chairs taller than shoes?
+89,shoes are shorter than chairs. Are chairs shorter than shoes?
+89,chairs are taller than shoes. Are shoes taller than chairs?
+89,chairs are taller than shoes. Are shoes shorter than chairs?
+89,chairs are taller than shoes. Are chairs taller than shoes?
+89,chairs are taller than shoes. Are chairs shorter than shoes?
+89,chairs are shorter than shoes. Are shoes taller than chairs?
+89,chairs are shorter than shoes. Are shoes shorter than chairs?
+89,chairs are shorter than shoes. Are chairs taller than shoes?
+89,chairs are shorter than shoes. Are chairs shorter than shoes?
+91,walking is faster than running. Is walking faster than running?
+91,walking is faster than running. Is walking slower than running?
+91,walking is faster than running. Is running faster than walking?
+91,walking is faster than running. Is running slower than walking?
+91,walking is slower than running. Is walking faster than running?
+91,walking is slower than running. Is walking slower than running?
+91,walking is slower than running. Is running faster than walking?
+91,walking is slower than running. Is running slower than walking?
+91,running is faster than walking. Is walking faster than running?
+91,running is faster than walking. Is walking slower than running?
+91,running is faster than walking. Is running faster than walking?
+91,running is faster than walking. Is running slower than walking?
+91,running is slower than walking. Is walking faster than running?
+91,running is slower than walking. Is walking slower than running?
+91,running is slower than walking. Is running faster than walking?
+91,running is slower than walking. Is running slower than walking?
+93,walking is more fun than running. Is walking more fun than running?
+93,walking is more fun than running. Is walking less fun than running?
+93,walking is more fun than running. Is running more fun than walking?
+93,walking is more fun than running. Is running less fun than walking?
+93,walking is less fun than running. Is walking more fun than running?
+93,walking is less fun than running. Is walking less fun than running?
+93,walking is less fun than running. Is running more fun than walking?
+93,walking is less fun than running. Is running less fun than walking?
+93,running is more fun than walking. Is walking more fun than running?
+93,running is more fun than walking. Is walking less fun than running?
+93,running is more fun than walking. Is running more fun than walking?
+93,running is more fun than walking. Is running less fun than walking?
+93,running is less fun than walking. Is walking more fun than running?
+93,running is less fun than walking. Is walking less fun than running?
+93,running is less fun than walking. Is running more fun than walking?
+93,running is less fun than walking. Is running less fun than walking?
+95,cats can jump jump farther than frogs. Do cats can jump jump farther than frogs?
+95,cats can jump jump farther than frogs. Do cats can jump jump less far than frogs?
+95,cats can jump jump farther than frogs. Do frogs can jump jump farther than cats?
+95,cats can jump jump farther than frogs. Do frogs can jump jump less far than cats?
+95,cats can jump jump less far than frogs. Do cats can jump jump farther than frogs?
+95,cats can jump jump less far than frogs. Do cats can jump jump less far than frogs?
+95,cats can jump jump less far than frogs. Do frogs can jump jump farther than cats?
+95,cats can jump jump less far than frogs. Do frogs can jump jump less far than cats?
+95,frogs can jump jump farther than cats. Do cats can jump jump farther than frogs?
+95,frogs can jump jump farther than cats. Do cats can jump jump less far than frogs?
+95,frogs can jump jump farther than cats. Do frogs can jump jump farther than cats?
+95,frogs can jump jump farther than cats. Do frogs can jump jump less far than cats?
+95,frogs can jump jump less far than cats. Do cats can jump jump farther than frogs?
+95,frogs can jump jump less far than cats. Do cats can jump jump less far than frogs?
+95,frogs can jump jump less far than cats. Do frogs can jump jump farther than cats?
+95,frogs can jump jump less far than cats. Do frogs can jump jump less far than cats?
+97,humans fly fly faster than birds. Do humans fly fly faster than birds?
+97,humans fly fly faster than birds. Do humans fly fly slower than birds?
+97,humans fly fly faster than birds. Do birds fly fly faster than humans?
+97,humans fly fly faster than birds. Do birds fly fly slower than humans?
+97,humans fly fly slower than birds. Do humans fly fly faster than birds?
+97,humans fly fly slower than birds. Do humans fly fly slower than birds?
+97,humans fly fly slower than birds. Do birds fly fly faster than humans?
+97,humans fly fly slower than birds. Do birds fly fly slower than humans?
+97,birds fly fly faster than humans. Do humans fly fly faster than birds?
+97,birds fly fly faster than humans. Do humans fly fly slower than birds?
+97,birds fly fly faster than humans. Do birds fly fly faster than humans?
+97,birds fly fly faster than humans. Do birds fly fly slower than humans?
+97,birds fly fly slower than humans. Do humans fly fly faster than birds?
+97,birds fly fly slower than humans. Do humans fly fly slower than birds?
+97,birds fly fly slower than humans. Do birds fly fly faster than humans?
+97,birds fly fly slower than humans. Do birds fly fly slower than humans?
+99,bears are smaller than spiders. Are bears smaller than spiders?
+99,bears are smaller than spiders. Are bears bigger than spiders?
+99,bears are smaller than spiders. Are spiders smaller than bears?
+99,bears are smaller than spiders. Are spiders bigger than bears?
+99,bears are bigger than spiders. Are bears smaller than spiders?
+99,bears are bigger than spiders. Are bears bigger than spiders?
+99,bears are bigger than spiders. Are spiders smaller than bears?
+99,bears are bigger than spiders. Are spiders bigger than bears?
+99,spiders are smaller than bears. Are bears smaller than spiders?
+99,spiders are smaller than bears. Are bears bigger than spiders?
+99,spiders are smaller than bears. Are spiders smaller than bears?
+99,spiders are smaller than bears. Are spiders bigger than bears?
+99,spiders are bigger than bears. Are bears smaller than spiders?
+99,spiders are bigger than bears. Are bears bigger than spiders?
+99,spiders are bigger than bears. Are spiders smaller than bears?
+99,spiders are bigger than bears. Are spiders bigger than bears?
+101,goats have longer necks than giraffes. Do goats have longer necks than giraffes?
+101,goats have longer necks than giraffes. Do goats have shorter necks than giraffes?
+101,goats have longer necks than giraffes. Do giraffes have longer necks than goats?
+101,goats have longer necks than giraffes. Do giraffes have shorter necks than goats?
+101,goats have shorter necks than giraffes. Do goats have longer necks than giraffes?
+101,goats have shorter necks than giraffes. Do goats have shorter necks than giraffes?
+101,goats have shorter necks than giraffes. Do giraffes have longer necks than goats?
+101,goats have shorter necks than giraffes. Do giraffes have shorter necks than goats?
+101,giraffes have longer necks than goats. Do goats have longer necks than giraffes?
+101,giraffes have longer necks than goats. Do goats have shorter necks than giraffes?
+101,giraffes have longer necks than goats. Do giraffes have longer necks than goats?
+101,giraffes have longer necks than goats. Do giraffes have shorter necks than goats?
+101,giraffes have shorter necks than goats. Do goats have longer necks than giraffes?
+101,giraffes have shorter necks than goats. Do goats have shorter necks than giraffes?
+101,giraffes have shorter necks than goats. Do giraffes have longer necks than goats?
+101,giraffes have shorter necks than goats. Do giraffes have shorter necks than goats?
+103,worms are more scary than sharks. Are worms more scary than sharks?
+103,worms are more scary than sharks. Are worms less scary than sharks?
+103,worms are more scary than sharks. Are sharks more scary than worms?
+103,worms are more scary than sharks. Are sharks less scary than worms?
+103,worms are less scary than sharks. Are worms more scary than sharks?
+103,worms are less scary than sharks. Are worms less scary than sharks?
+103,worms are less scary than sharks. Are sharks more scary than worms?
+103,worms are less scary than sharks. Are sharks less scary than worms?
+103,sharks are more scary than worms. Are worms more scary than sharks?
+103,sharks are more scary than worms. Are worms less scary than sharks?
+103,sharks are more scary than worms. Are sharks more scary than worms?
+103,sharks are more scary than worms. Are sharks less scary than worms?
+103,sharks are less scary than worms. Are worms more scary than sharks?
+103,sharks are less scary than worms. Are worms less scary than sharks?
+103,sharks are less scary than worms. Are sharks more scary than worms?
+103,sharks are less scary than worms. Are sharks less scary than worms?
+105,shrubs are bigger than trees. Are shrubs bigger than trees?
+105,shrubs are bigger than trees. Are shrubs smaller than trees?
+105,shrubs are bigger than trees. Are trees bigger than shrubs?
+105,shrubs are bigger than trees. Are trees smaller than shrubs?
+105,shrubs are smaller than trees. Are shrubs bigger than trees?
+105,shrubs are smaller than trees. Are shrubs smaller than trees?
+105,shrubs are smaller than trees. Are trees bigger than shrubs?
+105,shrubs are smaller than trees. Are trees smaller than shrubs?
+105,trees are bigger than shrubs. Are shrubs bigger than trees?
+105,trees are bigger than shrubs. Are shrubs smaller than trees?
+105,trees are bigger than shrubs. Are trees bigger than shrubs?
+105,trees are bigger than shrubs. Are trees smaller than shrubs?
+105,trees are smaller than shrubs. Are shrubs bigger than trees?
+105,trees are smaller than shrubs. Are shrubs smaller than trees?
+105,trees are smaller than shrubs. Are trees bigger than shrubs?
+105,trees are smaller than shrubs. Are trees smaller than shrubs?
+107,airplanes are faster than rockets. Are airplanes faster than rockets?
+107,airplanes are faster than rockets. Are airplanes slower than rockets?
+107,airplanes are faster than rockets. Are rockets faster than airplanes?
+107,airplanes are faster than rockets. Are rockets slower than airplanes?
+107,airplanes are slower than rockets. Are airplanes faster than rockets?
+107,airplanes are slower than rockets. Are airplanes slower than rockets?
+107,airplanes are slower than rockets. Are rockets faster than airplanes?
+107,airplanes are slower than rockets. Are rockets slower than airplanes?
+107,rockets are faster than airplanes. Are airplanes faster than rockets?
+107,rockets are faster than airplanes. Are airplanes slower than rockets?
+107,rockets are faster than airplanes. Are rockets faster than airplanes?
+107,rockets are faster than airplanes. Are rockets slower than airplanes?
+107,rockets are slower than airplanes. Are airplanes faster than rockets?
+107,rockets are slower than airplanes. Are airplanes slower than rockets?
+107,rockets are slower than airplanes. Are rockets faster than airplanes?
+107,rockets are slower than airplanes. Are rockets slower than airplanes?
+109,lemons are sweeter than tomatoes. Are lemons sweeter than tomatoes?
+109,lemons are sweeter than tomatoes. Are lemons less sweet than tomatoes?
+109,lemons are sweeter than tomatoes. Are tomatoes sweeter than lemons?
+109,lemons are sweeter than tomatoes. Are tomatoes less sweet than lemons?
+109,lemons are less sweet than tomatoes. Are lemons sweeter than tomatoes?
+109,lemons are less sweet than tomatoes. Are lemons less sweet than tomatoes?
+109,lemons are less sweet than tomatoes. Are tomatoes sweeter than lemons?
+109,lemons are less sweet than tomatoes. Are tomatoes less sweet than lemons?
+109,tomatoes are sweeter than lemons. Are lemons sweeter than tomatoes?
+109,tomatoes are sweeter than lemons. Are lemons less sweet than tomatoes?
+109,tomatoes are sweeter than lemons. Are tomatoes sweeter than lemons?
+109,tomatoes are sweeter than lemons. Are tomatoes less sweet than lemons?
+109,tomatoes are less sweet than lemons. Are lemons sweeter than tomatoes?
+109,tomatoes are less sweet than lemons. Are lemons less sweet than tomatoes?
+109,tomatoes are less sweet than lemons. Are tomatoes sweeter than lemons?
+109,tomatoes are less sweet than lemons. Are tomatoes less sweet than lemons?
+111,mice can run run faster than cheetahs. Do mice can run run faster than cheetahs?
+111,mice can run run faster than cheetahs. Do mice can run run slower than cheetahs?
+111,mice can run run faster than cheetahs. Do cheetahs can run run faster than mice?
+111,mice can run run faster than cheetahs. Do cheetahs can run run slower than mice?
+111,mice can run run slower than cheetahs. Do mice can run run faster than cheetahs?
+111,mice can run run slower than cheetahs. Do mice can run run slower than cheetahs?
+111,mice can run run slower than cheetahs. Do cheetahs can run run faster than mice?
+111,mice can run run slower than cheetahs. Do cheetahs can run run slower than mice?
+111,cheetahs can run run faster than mice. Do mice can run run faster than cheetahs?
+111,cheetahs can run run faster than mice. Do mice can run run slower than cheetahs?
+111,cheetahs can run run faster than mice. Do cheetahs can run run faster than mice?
+111,cheetahs can run run faster than mice. Do cheetahs can run run slower than mice?
+111,cheetahs can run run slower than mice. Do mice can run run faster than cheetahs?
+111,cheetahs can run run slower than mice. Do mice can run run slower than cheetahs?
+111,cheetahs can run run slower than mice. Do cheetahs can run run faster than mice?
+111,cheetahs can run run slower than mice. Do cheetahs can run run slower than mice?
+113,giraffes are fatter than penguins. Are giraffes fatter than penguins?
+113,giraffes are fatter than penguins. Are giraffes skinnier than penguins?
+113,giraffes are fatter than penguins. Are penguins fatter than giraffes?
+113,giraffes are fatter than penguins. Are penguins skinnier than giraffes?
+113,giraffes are skinnier than penguins. Are giraffes fatter than penguins?
+113,giraffes are skinnier than penguins. Are giraffes skinnier than penguins?
+113,giraffes are skinnier than penguins. Are penguins fatter than giraffes?
+113,giraffes are skinnier than penguins. Are penguins skinnier than giraffes?
+113,penguins are fatter than giraffes. Are giraffes fatter than penguins?
+113,penguins are fatter than giraffes. Are giraffes skinnier than penguins?
+113,penguins are fatter than giraffes. Are penguins fatter than giraffes?
+113,penguins are fatter than giraffes. Are penguins skinnier than giraffes?
+113,penguins are skinnier than giraffes. Are giraffes fatter than penguins?
+113,penguins are skinnier than giraffes. Are giraffes skinnier than penguins?
+113,penguins are skinnier than giraffes. Are penguins fatter than giraffes?
+113,penguins are skinnier than giraffes. Are penguins skinnier than giraffes?
+115,fish are more loyal than dogs. Are fish more loyal than dogs?
+115,fish are more loyal than dogs. Are fish less loyal than dogs?
+115,fish are more loyal than dogs. Are dogs more loyal than fish?
+115,fish are more loyal than dogs. Are dogs less loyal than fish?
+115,fish are less loyal than dogs. Are fish more loyal than dogs?
+115,fish are less loyal than dogs. Are fish less loyal than dogs?
+115,fish are less loyal than dogs. Are dogs more loyal than fish?
+115,fish are less loyal than dogs. Are dogs less loyal than fish?
+115,dogs are more loyal than fish. Are fish more loyal than dogs?
+115,dogs are more loyal than fish. Are fish less loyal than dogs?
+115,dogs are more loyal than fish. Are dogs more loyal than fish?
+115,dogs are more loyal than fish. Are dogs less loyal than fish?
+115,dogs are less loyal than fish. Are fish more loyal than dogs?
+115,dogs are less loyal than fish. Are fish less loyal than dogs?
+115,dogs are less loyal than fish. Are dogs more loyal than fish?
+115,dogs are less loyal than fish. Are dogs less loyal than fish?
+117,birds are more dangerous than bees. Are birds more dangerous than bees?
+117,birds are more dangerous than bees. Are birds less dangerous than bees?
+117,birds are more dangerous than bees. Are bees more dangerous than birds?
+117,birds are more dangerous than bees. Are bees less dangerous than birds?
+117,birds are less dangerous than bees. Are birds more dangerous than bees?
+117,birds are less dangerous than bees. Are birds less dangerous than bees?
+117,birds are less dangerous than bees. Are bees more dangerous than birds?
+117,birds are less dangerous than bees. Are bees less dangerous than birds?
+117,bees are more dangerous than birds. Are birds more dangerous than bees?
+117,bees are more dangerous than birds. Are birds less dangerous than bees?
+117,bees are more dangerous than birds. Are bees more dangerous than birds?
+117,bees are more dangerous than birds. Are bees less dangerous than birds?
+117,bees are less dangerous than birds. Are birds more dangerous than bees?
+117,bees are less dangerous than birds. Are birds less dangerous than bees?
+117,bees are less dangerous than birds. Are bees more dangerous than birds?
+117,bees are less dangerous than birds. Are bees less dangerous than birds?
+119,caterpillars are stronger than ants. Are caterpillars stronger than ants?
+119,caterpillars are stronger than ants. Are caterpillars weaker than ants?
+119,caterpillars are stronger than ants. Are ants stronger than caterpillars?
+119,caterpillars are stronger than ants. Are ants weaker than caterpillars?
+119,caterpillars are weaker than ants. Are caterpillars stronger than ants?
+119,caterpillars are weaker than ants. Are caterpillars weaker than ants?
+119,caterpillars are weaker than ants. Are ants stronger than caterpillars?
+119,caterpillars are weaker than ants. Are ants weaker than caterpillars?
+119,ants are stronger than caterpillars. Are caterpillars stronger than ants?
+119,ants are stronger than caterpillars. Are caterpillars weaker than ants?
+119,ants are stronger than caterpillars. Are ants stronger than caterpillars?
+119,ants are stronger than caterpillars. Are ants weaker than caterpillars?
+119,ants are weaker than caterpillars. Are caterpillars stronger than ants?
+119,ants are weaker than caterpillars. Are caterpillars weaker than ants?
+119,ants are weaker than caterpillars. Are ants stronger than caterpillars?
+119,ants are weaker than caterpillars. Are ants weaker than caterpillars?
+121,wolves are more dangerous than lions. Are wolves more dangerous than lions?
+121,wolves are more dangerous than lions. Are wolves less dangerous than lions?
+121,wolves are more dangerous than lions. Are lions more dangerous than wolves?
+121,wolves are more dangerous than lions. Are lions less dangerous than wolves?
+121,wolves are less dangerous than lions. Are wolves more dangerous than lions?
+121,wolves are less dangerous than lions. Are wolves less dangerous than lions?
+121,wolves are less dangerous than lions. Are lions more dangerous than wolves?
+121,wolves are less dangerous than lions. Are lions less dangerous than wolves?
+121,lions are more dangerous than wolves. Are wolves more dangerous than lions?
+121,lions are more dangerous than wolves. Are wolves less dangerous than lions?
+121,lions are more dangerous than wolves. Are lions more dangerous than wolves?
+121,lions are more dangerous than wolves. Are lions less dangerous than wolves?
+121,lions are less dangerous than wolves. Are wolves more dangerous than lions?
+121,lions are less dangerous than wolves. Are wolves less dangerous than lions?
+121,lions are less dangerous than wolves. Are lions more dangerous than wolves?
+121,lions are less dangerous than wolves. Are lions less dangerous than wolves?
+123,ants are taller than people. Are ants taller than people?
+123,ants are taller than people. Are ants shorter than people?
+123,ants are taller than people. Are people taller than ants?
+123,ants are taller than people. Are people shorter than ants?
+123,ants are shorter than people. Are ants taller than people?
+123,ants are shorter than people. Are ants shorter than people?
+123,ants are shorter than people. Are people taller than ants?
+123,ants are shorter than people. Are people shorter than ants?
+123,people are taller than ants. Are ants taller than people?
+123,people are taller than ants. Are ants shorter than people?
+123,people are taller than ants. Are people taller than ants?
+123,people are taller than ants. Are people shorter than ants?
+123,people are shorter than ants. Are ants taller than people?
+123,people are shorter than ants. Are ants shorter than people?
+123,people are shorter than ants. Are people taller than ants?
+123,people are shorter than ants. Are people shorter than ants?
+125,fish are more beautiful than butterflies. Are fish more beautiful than butterflies?
+125,fish are more beautiful than butterflies. Are fish less beautiful than butterflies?
+125,fish are more beautiful than butterflies. Are butterflies more beautiful than fish?
+125,fish are more beautiful than butterflies. Are butterflies less beautiful than fish?
+125,fish are less beautiful than butterflies. Are fish more beautiful than butterflies?
+125,fish are less beautiful than butterflies. Are fish less beautiful than butterflies?
+125,fish are less beautiful than butterflies. Are butterflies more beautiful than fish?
+125,fish are less beautiful than butterflies. Are butterflies less beautiful than fish?
+125,butterflies are more beautiful than fish. Are fish more beautiful than butterflies?
+125,butterflies are more beautiful than fish. Are fish less beautiful than butterflies?
+125,butterflies are more beautiful than fish. Are butterflies more beautiful than fish?
+125,butterflies are more beautiful than fish. Are butterflies less beautiful than fish?
+125,butterflies are less beautiful than fish. Are fish more beautiful than butterflies?
+125,butterflies are less beautiful than fish. Are fish less beautiful than butterflies?
+125,butterflies are less beautiful than fish. Are butterflies more beautiful than fish?
+125,butterflies are less beautiful than fish. Are butterflies less beautiful than fish?
+127,cats are stronger than dogs. Are cats stronger than dogs?
+127,cats are stronger than dogs. Are cats weaker than dogs?
+127,cats are stronger than dogs. Are dogs stronger than cats?
+127,cats are stronger than dogs. Are dogs weaker than cats?
+127,cats are weaker than dogs. Are cats stronger than dogs?
+127,cats are weaker than dogs. Are cats weaker than dogs?
+127,cats are weaker than dogs. Are dogs stronger than cats?
+127,cats are weaker than dogs. Are dogs weaker than cats?
+127,dogs are stronger than cats. Are cats stronger than dogs?
+127,dogs are stronger than cats. Are cats weaker than dogs?
+127,dogs are stronger than cats. Are dogs stronger than cats?
+127,dogs are stronger than cats. Are dogs weaker than cats?
+127,dogs are weaker than cats. Are cats stronger than dogs?
+127,dogs are weaker than cats. Are cats weaker than dogs?
+127,dogs are weaker than cats. Are dogs stronger than cats?
+127,dogs are weaker than cats. Are dogs weaker than cats?
+129,insects are stronger than gorillas. Are insects stronger than gorillas?
+129,insects are stronger than gorillas. Are insects weaker than gorillas?
+129,insects are stronger than gorillas. Is gorillas stronger than insects?
+129,insects are stronger than gorillas. Is gorillas weaker than insects?
+129,insects are weaker than gorillas. Are insects stronger than gorillas?
+129,insects are weaker than gorillas. Are insects weaker than gorillas?
+129,insects are weaker than gorillas. Is gorillas stronger than insects?
+129,insects are weaker than gorillas. Is gorillas weaker than insects?
+129,gorillas are stronger than insects. Are insects stronger than gorillas?
+129,gorillas are stronger than insects. Are insects weaker than gorillas?
+129,gorillas are stronger than insects. Is gorillas stronger than insects?
+129,gorillas are stronger than insects. Is gorillas weaker than insects?
+129,gorillas are weaker than insects. Are insects stronger than gorillas?
+129,gorillas are weaker than insects. Are insects weaker than gorillas?
+129,gorillas are weaker than insects. Is gorillas stronger than insects?
+129,gorillas are weaker than insects. Is gorillas weaker than insects?
+131,night is hotter than day. Is night hotter than day?
+131,night is hotter than day. Is night colder than day?
+131,night is hotter than day. Is day hotter than night?
+131,night is hotter than day. Is day colder than night?
+131,night is colder than day. Is night hotter than day?
+131,night is colder than day. Is night colder than day?
+131,night is colder than day. Is day hotter than night?
+131,night is colder than day. Is day colder than night?
+131,day is hotter than night. Is night hotter than day?
+131,day is hotter than night. Is night colder than day?
+131,day is hotter than night. Is day hotter than night?
+131,day is hotter than night. Is day colder than night?
+131,day is colder than night. Is night hotter than day?
+131,day is colder than night. Is night colder than day?
+131,day is colder than night. Is day hotter than night?
+131,day is colder than night. Is day colder than night?
+133,silver is more expensive than gold. Is silver more expensive than gold?
+133,silver is more expensive than gold. Is silver less expensive than gold?
+133,silver is more expensive than gold. Is gold more expensive than silver?
+133,silver is more expensive than gold. Is gold less expensive than silver?
+133,silver is less expensive than gold. Is silver more expensive than gold?
+133,silver is less expensive than gold. Is silver less expensive than gold?
+133,silver is less expensive than gold. Is gold more expensive than silver?
+133,silver is less expensive than gold. Is gold less expensive than silver?
+133,gold is more expensive than silver. Is silver more expensive than gold?
+133,gold is more expensive than silver. Is silver less expensive than gold?
+133,gold is more expensive than silver. Is gold more expensive than silver?
+133,gold is more expensive than silver. Is gold less expensive than silver?
+133,gold is less expensive than silver. Is silver more expensive than gold?
+133,gold is less expensive than silver. Is silver less expensive than gold?
+133,gold is less expensive than silver. Is gold more expensive than silver?
+133,gold is less expensive than silver. Is gold less expensive than silver?
+135,enemies are better than friends. Are enemies better than friends?
+135,enemies are better than friends. Are enemies worse than friends?
+135,enemies are better than friends. Are friends better than enemies?
+135,enemies are better than friends. Are friends worse than enemies?
+135,enemies are worse than friends. Are enemies better than friends?
+135,enemies are worse than friends. Are enemies worse than friends?
+135,enemies are worse than friends. Are friends better than enemies?
+135,enemies are worse than friends. Are friends worse than enemies?
+135,friends are better than enemies. Are enemies better than friends?
+135,friends are better than enemies. Are enemies worse than friends?
+135,friends are better than enemies. Are friends better than enemies?
+135,friends are better than enemies. Are friends worse than enemies?
+135,friends are worse than enemies. Are enemies better than friends?
+135,friends are worse than enemies. Are enemies worse than friends?
+135,friends are worse than enemies. Are friends better than enemies?
+135,friends are worse than enemies. Are friends worse than enemies?
+137,cars are bigger than boats. Are cars bigger than boats?
+137,cars are bigger than boats. Are cars smaller than boats?
+137,cars are bigger than boats. Are boats bigger than cars?
+137,cars are bigger than boats. Are boats smaller than cars?
+137,cars are smaller than boats. Are cars bigger than boats?
+137,cars are smaller than boats. Are cars smaller than boats?
+137,cars are smaller than boats. Are boats bigger than cars?
+137,cars are smaller than boats. Are boats smaller than cars?
+137,boats are bigger than cars. Are cars bigger than boats?
+137,boats are bigger than cars. Are cars smaller than boats?
+137,boats are bigger than cars. Are boats bigger than cars?
+137,boats are bigger than cars. Are boats smaller than cars?
+137,boats are smaller than cars. Are cars bigger than boats?
+137,boats are smaller than cars. Are cars smaller than boats?
+137,boats are smaller than cars. Are boats bigger than cars?
+137,boats are smaller than cars. Are boats smaller than cars?
+139,horses are faster than cars. Are horses faster than cars?
+139,horses are faster than cars. Are horses slower than cars?
+139,horses are faster than cars. Are cars faster than horses?
+139,horses are faster than cars. Are cars slower than horses?
+139,horses are slower than cars. Are horses faster than cars?
+139,horses are slower than cars. Are horses slower than cars?
+139,horses are slower than cars. Are cars faster than horses?
+139,horses are slower than cars. Are cars slower than horses?
+139,cars are faster than horses. Are horses faster than cars?
+139,cars are faster than horses. Are horses slower than cars?
+139,cars are faster than horses. Are cars faster than horses?
+139,cars are faster than horses. Are cars slower than horses?
+139,cars are slower than horses. Are horses faster than cars?
+139,cars are slower than horses. Are horses slower than cars?
+139,cars are slower than horses. Are cars faster than horses?
+139,cars are slower than horses. Are cars slower than horses?
+141,snow is wetter than rain. Is snow wetter than rain?
+141,snow is wetter than rain. Is snow drier than rain?
+141,snow is wetter than rain. Is rain wetter than snow?
+141,snow is wetter than rain. Is rain drier than snow?
+141,snow is drier than rain. Is snow wetter than rain?
+141,snow is drier than rain. Is snow drier than rain?
+141,snow is drier than rain. Is rain wetter than snow?
+141,snow is drier than rain. Is rain drier than snow?
+141,rain is wetter than snow. Is snow wetter than rain?
+141,rain is wetter than snow. Is snow drier than rain?
+141,rain is wetter than snow. Is rain wetter than snow?
+141,rain is wetter than snow. Is rain drier than snow?
+141,rain is drier than snow. Is snow wetter than rain?
+141,rain is drier than snow. Is snow drier than rain?
+141,rain is drier than snow. Is rain wetter than snow?
+141,rain is drier than snow. Is rain drier than snow?
+143,winter is hotter than summer. Is winter hotter than summer?
+143,winter is hotter than summer. Is winter colder than summer?
+143,winter is hotter than summer. Is summer hotter than winter?
+143,winter is hotter than summer. Is summer colder than winter?
+143,winter is colder than summer. Is winter hotter than summer?
+143,winter is colder than summer. Is winter colder than summer?
+143,winter is colder than summer. Is summer hotter than winter?
+143,winter is colder than summer. Is summer colder than winter?
+143,summer is hotter than winter. Is winter hotter than summer?
+143,summer is hotter than winter. Is winter colder than summer?
+143,summer is hotter than winter. Is summer hotter than winter?
+143,summer is hotter than winter. Is summer colder than winter?
+143,summer is colder than winter. Is winter hotter than summer?
+143,summer is colder than winter. Is winter colder than summer?
+143,summer is colder than winter. Is summer hotter than winter?
+143,summer is colder than winter. Is summer colder than winter?
+145,Europe is bigger than Africa. Is Europe bigger than Africa?
+145,Europe is bigger than Africa. Is Europe smaller than Africa?
+145,Europe is bigger than Africa. Is Africa bigger than Europe?
+145,Europe is bigger than Africa. Is Africa smaller than Europe?
+145,Europe is smaller than Africa. Is Europe bigger than Africa?
+145,Europe is smaller than Africa. Is Europe smaller than Africa?
+145,Europe is smaller than Africa. Is Africa bigger than Europe?
+145,Europe is smaller than Africa. Is Africa smaller than Europe?
+145,Africa is bigger than Europe. Is Europe bigger than Africa?
+145,Africa is bigger than Europe. Is Europe smaller than Africa?
+145,Africa is bigger than Europe. Is Africa bigger than Europe?
+145,Africa is bigger than Europe. Is Africa smaller than Europe?
+145,Africa is smaller than Europe. Is Europe bigger than Africa?
+145,Africa is smaller than Europe. Is Europe smaller than Africa?
+145,Africa is smaller than Europe. Is Africa bigger than Europe?
+145,Africa is smaller than Europe. Is Africa smaller than Europe?
+147,Europe is bigger than Latin America. Is Europe bigger than Latin America?
+147,Europe is bigger than Latin America. Is Europe smaller than Latin America?
+147,Europe is bigger than Latin America. Is Latin America bigger than Europe?
+147,Europe is bigger than Latin America. Is Latin America smaller than Europe?
+147,Europe is smaller than Latin America. Is Europe bigger than Latin America?
+147,Europe is smaller than Latin America. Is Europe smaller than Latin America?
+147,Europe is smaller than Latin America. Is Latin America bigger than Europe?
+147,Europe is smaller than Latin America. Is Latin America smaller than Europe?
+147,Latin America is bigger than Europe. Is Europe bigger than Latin America?
+147,Latin America is bigger than Europe. Is Europe smaller than Latin America?
+147,Latin America is bigger than Europe. Is Latin America bigger than Europe?
+147,Latin America is bigger than Europe. Is Latin America smaller than Europe?
+147,Latin America is smaller than Europe. Is Europe bigger than Latin America?
+147,Latin America is smaller than Europe. Is Europe smaller than Latin America?
+147,Latin America is smaller than Europe. Is Latin America bigger than Europe?
+147,Latin America is smaller than Europe. Is Latin America smaller than Europe?
+149,Europe is bigger than Asia. Is Europe bigger than Asia?
+149,Europe is bigger than Asia. Is Europe smaller than Asia?
+149,Europe is bigger than Asia. Is Asia bigger than Europe?
+149,Europe is bigger than Asia. Is Asia smaller than Europe?
+149,Europe is smaller than Asia. Is Europe bigger than Asia?
+149,Europe is smaller than Asia. Is Europe smaller than Asia?
+149,Europe is smaller than Asia. Is Asia bigger than Europe?
+149,Europe is smaller than Asia. Is Asia smaller than Europe?
+149,Asia is bigger than Europe. Is Europe bigger than Asia?
+149,Asia is bigger than Europe. Is Europe smaller than Asia?
+149,Asia is bigger than Europe. Is Asia bigger than Europe?
+149,Asia is bigger than Europe. Is Asia smaller than Europe?
+149,Asia is smaller than Europe. Is Europe bigger than Asia?
+149,Asia is smaller than Europe. Is Europe smaller than Asia?
+149,Asia is smaller than Europe. Is Asia bigger than Europe?
+149,Asia is smaller than Europe. Is Asia smaller than Europe?
+151,Australia is bigger than Africa. Is Australia bigger than Africa?
+151,Australia is bigger than Africa. Is Australia smaller than Africa?
+151,Australia is bigger than Africa. Is Africa bigger than Australia?
+151,Australia is bigger than Africa. Is Africa smaller than Australia?
+151,Australia is smaller than Africa. Is Australia bigger than Africa?
+151,Australia is smaller than Africa. Is Australia smaller than Africa?
+151,Australia is smaller than Africa. Is Africa bigger than Australia?
+151,Australia is smaller than Africa. Is Africa smaller than Australia?
+151,Africa is bigger than Australia. Is Australia bigger than Africa?
+151,Africa is bigger than Australia. Is Australia smaller than Africa?
+151,Africa is bigger than Australia. Is Africa bigger than Australia?
+151,Africa is bigger than Australia. Is Africa smaller than Australia?
+151,Africa is smaller than Australia. Is Australia bigger than Africa?
+151,Africa is smaller than Australia. Is Australia smaller than Africa?
+151,Africa is smaller than Australia. Is Africa bigger than Australia?
+151,Africa is smaller than Australia. Is Africa smaller than Australia?
+153,moon is hotter than sun. Is moon hotter than sun?
+153,moon is hotter than sun. Is moon colder than sun?
+153,moon is hotter than sun. Is sun hotter than moon?
+153,moon is hotter than sun. Is sun colder than moon?
+153,moon is colder than sun. Is moon hotter than sun?
+153,moon is colder than sun. Is moon colder than sun?
+153,moon is colder than sun. Is sun hotter than moon?
+153,moon is colder than sun. Is sun colder than moon?
+153,sun is hotter than moon. Is moon hotter than sun?
+153,sun is hotter than moon. Is moon colder than sun?
+153,sun is hotter than moon. Is sun hotter than moon?
+153,sun is hotter than moon. Is sun colder than moon?
+153,sun is colder than moon. Is moon hotter than sun?
+153,sun is colder than moon. Is moon colder than sun?
+153,sun is colder than moon. Is sun hotter than moon?
+153,sun is colder than moon. Is sun colder than moon?
+155,moon is brighter than sun. Is moon brighter than sun?
+155,moon is brighter than sun. Is moon dimmer than sun?
+155,moon is brighter than sun. Is sun brighter than moon?
+155,moon is brighter than sun. Is sun dimmer than moon?
+155,moon is dimmer than sun. Is moon brighter than sun?
+155,moon is dimmer than sun. Is moon dimmer than sun?
+155,moon is dimmer than sun. Is sun brighter than moon?
+155,moon is dimmer than sun. Is sun dimmer than moon?
+155,sun is brighter than moon. Is moon brighter than sun?
+155,sun is brighter than moon. Is moon dimmer than sun?
+155,sun is brighter than moon. Is sun brighter than moon?
+155,sun is brighter than moon. Is sun dimmer than moon?
+155,sun is dimmer than moon. Is moon brighter than sun?
+155,sun is dimmer than moon. Is moon dimmer than sun?
+155,sun is dimmer than moon. Is sun brighter than moon?
+155,sun is dimmer than moon. Is sun dimmer than moon?
