@@ -1,0 +1,2 @@
+,model,consistent_acc,inconsistent_acc,nonsense_acc
+0,google/gemma-2-9b-it,0.4967948717948718,0.335,0.49837662337662336

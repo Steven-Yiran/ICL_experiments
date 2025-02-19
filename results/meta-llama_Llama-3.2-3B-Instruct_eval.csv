@@ -1,0 +1,2 @@
+,model,consistent_acc,inconsistent_acc,nonsense_acc
+0,meta-llama/Llama-3.2-3B-Instruct,0.8221153846153846,0.545,0.7743506493506493
