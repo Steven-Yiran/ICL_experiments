@@ -7,6 +7,35 @@ import numpy as np
 import torch
 from tqdm import tqdm
 
+class LogitAccuracy:
+    def __init__(self, data_type):
+        self.data_type = data_type
+        self.correct = 0
+        self.total = 0
+
+    def update(self, correct_logit, incorrect_logit):
+        self.total += 1
+        if correct_logit > incorrect_logit:
+            self.correct += 1
+
+    def get_acc(self):
+        return self.correct / self.total
+
+class ExactMatchAccuracy:
+    def __init__(self, data_type):
+        self.data_type = data_type
+        self.correct = 0
+        self.total = 0
+        
+    def update(self, generation, gold):
+        self.total += 1
+        if generation == gold:
+            self.correct += 1
+
+    def get_acc(self):
+        return self.correct / self.total
+
+
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -30,6 +59,20 @@ def parse_args():
         help="path to data",
     )
 
+    parser.add_argument(
+        "-v",
+        "--valid_token",
+        default=" Yes",
+        help="token to use for responding ``valid''",
+    )
+
+    parser.add_argument(
+        "-i",
+        "--invalid_token",
+        default=" No",
+        help="token to use for responding ``invalid''",
+    )
+
     argv = sys.argv[1:]
     args, _ = parser.parse_known_args(argv)
 
@@ -42,25 +85,28 @@ def parse_args():
 
 def eval_prompt(question):
     return f"""
-    Answer this question with Yes or No. Question: {question} Answer:\n
+    Answer this question with Yes or No. Question: {question} Answer:
     """
 
 def get_model_and_tokenizer(model_str, device):
     """Helper function to get model"""
     tokenizer = AutoTokenizer.from_pretrained(model_str)
-    tokenizer.pad_token = tokenizer.eos_token
+    #tokenizer.pad_token = tokenizer.eos_token
     model = AutoModelForCausalLM.from_pretrained(model_str, torch_dtype=torch.bfloat16)
     model.to(device)
     return model, tokenizer
 
 
-def inference(model, tokenizer, data, args):
-    consistent_correct = 0
-    inconsistent_correct = 0
-    nonsense_correct = 0
-
-    valid_tok = tokenizer(" Yes")["input_ids"][1]
-    invalid_tok = tokenizer(" No")["input_ids"][1]
+def evaluate(model, tokenizer, data, args):
+    consistent_logit_acc = LogitAccuracy("consistent")
+    inconsistent_logit_acc = LogitAccuracy("inconsistent")
+    nonsense_logit_acc = LogitAccuracy("nonsense")
+    consistent_exact_match_acc = ExactMatchAccuracy("consistent")
+    inconsistent_exact_match_acc = ExactMatchAccuracy("inconsistent")
+    nonsense_exact_match_acc = ExactMatchAccuracy("nonsense")
+    
+    valid_tok = tokenizer(args.valid_token)["input_ids"][1]
+    invalid_tok = tokenizer(args.invalid_token)["input_ids"][1]
 
     for i, row in tqdm(data.iterrows(), total=len(data)):
         question = row["prompt"]
@@ -78,35 +124,31 @@ def inference(model, tokenizer, data, args):
             correct_tok = invalid_tok
             incorrect_tok = valid_tok
         
-        correct = outputs[0, -1, correct_tok] > outputs[0, -1, incorrect_tok]
+        max_token = torch.argmax(outputs[0, -1, :]).item()
+        max_prob_tok = tokenizer.decode(max_token).lower().strip()
+        
+        if max_token not in [valid_tok, invalid_tok]:
+            print(f"Max token {max_token} ({tokenizer.decode(max_token)}) not in {valid_tok} or {invalid_tok}")
+            continue
 
-        if correct.cpu():
-            if dataset_type == "consistent":
-                consistent_correct += 1
-            elif dataset_type == "inconsistent":
-                inconsistent_correct += 1
-            else:
-                nonsense_correct += 1
-
-    return consistent_correct, inconsistent_correct, nonsense_correct
-
-
-def evaluate(model, tokenizer, data, args):
-    consistent_correct, inconsistent_correct, nonsense_correct = inference(model, tokenizer, data, args)
-
-    consistent_total = len(data[data["dataset_type"] == "consistent"])
-    inconsistent_total = len(data[data["dataset_type"] == "inconsistent"])
-    nonsense_total = len(data[data["dataset_type"] == "nonsense"])
-
-    consistent_acc = consistent_correct / consistent_total
-    inconsistent_acc = inconsistent_correct / inconsistent_total
-    nonsense_acc = nonsense_correct / nonsense_total
+        if dataset_type == "consistent":
+            consistent_logit_acc.update(outputs[0, -1, correct_tok], outputs[0, -1, incorrect_tok])
+            consistent_exact_match_acc.update(max_prob_tok, gold)
+        elif dataset_type == "inconsistent":
+            inconsistent_logit_acc.update(outputs[0, -1, correct_tok], outputs[0, -1, incorrect_tok])
+            inconsistent_exact_match_acc.update(max_prob_tok, gold)
+        else:
+            nonsense_logit_acc.update(outputs[0, -1, correct_tok], outputs[0, -1, incorrect_tok])
+            nonsense_exact_match_acc.update(max_prob_tok, gold)
 
     return {
         "model": [args.model],
-        "consistent_acc": [consistent_acc],
-        "inconsistent_acc": [inconsistent_acc],
-        "nonsense_acc": [nonsense_acc]
+        "consistent_logit_acc": [consistent_logit_acc.get_acc()],
+        "inconsistent_logit_acc": [inconsistent_logit_acc.get_acc()],
+        "nonsense_logit_acc": [nonsense_logit_acc.get_acc()],
+        "consistent_exact_match_acc": [consistent_exact_match_acc.get_acc()],
+        "inconsistent_exact_match_acc": [inconsistent_exact_match_acc.get_acc()],
+        "nonsense_exact_match_acc": [nonsense_exact_match_acc.get_acc()]
     }
 
 

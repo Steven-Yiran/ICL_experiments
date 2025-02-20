@@ -1,2 +1,2 @@
-,model,consistent_acc,inconsistent_acc,nonsense_acc
-0,meta-llama/Llama-3.2-3B-Instruct,0.8221153846153846,0.545,0.7743506493506493
+,model,consistent_logit_acc,inconsistent_logit_acc,nonsense_logit_acc,consistent_exact_match_acc,inconsistent_exact_match_acc,nonsense_exact_match_acc
+0,meta-llama/Llama-3.2-3B-Instruct,0.8253205128205128,0.5466666666666666,0.6948051948051948,0.8285256410256411,0.5566666666666666,0.7012987012987013

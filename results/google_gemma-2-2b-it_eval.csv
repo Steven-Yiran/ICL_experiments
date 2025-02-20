@@ -1,2 +1,2 @@
-,model,consistent_acc,inconsistent_acc,nonsense_acc
-0,google/gemma-2-2b-it,0.8012820512820513,0.5716666666666667,0.6266233766233766
+,model,consistent_logit_acc,inconsistent_logit_acc,nonsense_logit_acc,consistent_exact_match_acc,inconsistent_exact_match_acc,nonsense_exact_match_acc
+0,google/gemma-2-2b-it,0.7596153846153846,0.5583333333333333,0.7207792207792207,0.7644230769230769,0.5733333333333334,0.7305194805194806

@@ -1,2 +1,2 @@
 ,model,consistent_logit_acc,inconsistent_logit_acc,nonsense_logit_acc,consistent_exact_match_acc,inconsistent_exact_match_acc,nonsense_exact_match_acc
-0,google/gemma-2-9b-it,0.4967948717948718,0.335,0.49837662337662336,0.594551282051282,0.24,0.3912337662337662
+0,meta-llama/Llama-3.2-1B,0.4951923076923077,0.49333333333333335,0.48863636363636365,0.5064102564102564,0.49666666666666665,0.487012987012987

@@ -23,13 +23,13 @@ x = np.arange(len(models))
 width = 0.25
 
 # Plot bars for each category
-ax.bar(x - width, results_df['consistent_acc'], width, label='Consistent', color='#2ecc71')
-ax.bar(x, results_df['inconsistent_acc'], width, label='Inconsistent', color='#e74c3c')
-ax.bar(x + width, results_df['nonsense_acc'], width, label='Nonsense', color='#3498db')
+ax.bar(x - width, results_df['consistent_logit_acc'], width, label='Consistent', color='#2ecc71')
+ax.bar(x, results_df['inconsistent_logit_acc'], width, label='Inconsistent', color='#e74c3c')
+ax.bar(x + width, results_df['nonsense_logit_acc'], width, label='Nonsense', color='#3498db')
 
 # Customize plot
 ax.set_ylabel('Accuracy')
-ax.set_title('Model Performance Across Categories')
+ax.set_title('Model Performance Across Categories (Logit)')
 ax.set_xticks(x)
 ax.set_xticklabels(models, rotation=45, ha='right')
 ax.legend()
@@ -40,4 +40,22 @@ plt.tight_layout()
 
 # Save plot
 plt.savefig('results/model_comparison.png')
+plt.close()
+
+# similarly plot the exact match accuracy
+fig, ax = plt.subplots(figsize=(10, 6))
+
+ax.bar(x - width, results_df['consistent_exact_match_acc'], width, label='Consistent', color='#2ecc71')
+ax.bar(x, results_df['inconsistent_exact_match_acc'], width, label='Inconsistent', color='#e74c3c')
+ax.bar(x + width, results_df['nonsense_exact_match_acc'], width, label='Nonsense', color='#3498db')
+
+ax.set_ylabel('Accuracy')
+ax.set_title('Model Performance Across Categories (Exact Match)')
+ax.set_xticks(x)
+ax.set_xticklabels(models, rotation=45, ha='right')
+ax.legend()
+ax.grid(axis='y', linestyle='--', alpha=0.7)
+
+plt.tight_layout()
+plt.savefig('results/model_comparison_exact_match.png')
 plt.close()
