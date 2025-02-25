@@ -1,6 +1,8 @@
 import argparse
 import sys
 import json
+import os
+
 import pandas as pd
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import numpy as np
@@ -13,6 +15,8 @@ from transformers import (
     DataCollatorForLanguageModeling,
     get_linear_schedule_with_warmup
 )
+
+from evaluate import eval_prompt
 
 
 def parse_args():
@@ -40,7 +44,7 @@ def parse_args():
     )
     parser.add_argument(
         "-k",
-        "--num_steps_between_forgets",
+        "--forget_interval",
         default=100,
         type=int,
         help="the frequency of performing active forgetting, k << N",
@@ -71,13 +75,25 @@ def parse_args():
     )
     parser.add_argument(
         "--train_data",
-        default="data/train-00000-of-00001.parquet",
+        default="wikitext",
         help="path or handler to the training data",
     )
     parser.add_argument(
         "--eval_data",
         default="data/eval_prompts.csv",
         help="path to the evaluation data",
+    )
+    parser.add_argument(
+        "-v",
+        "--valid_token",
+        default=" Yes",
+        help="token to use for responding ``valid''",
+    )
+    parser.add_argument(
+        "-i",
+        "--invalid_token",
+        default=" No",
+        help="token to use for responding ``invalid''",
     )
     parser.add_argument(
         "--output_dir",
@@ -89,6 +105,22 @@ def parse_args():
     args, _ = parser.parse_known_args(argv)
 
     return args
+
+class LogitDiffAccuracy:
+    """
+    Compute the accuracy of the model based on the logit difference between the correct and incorrect answers.
+    """
+    def __init__(self):
+        self.correct = 0
+        self.total = 0
+
+    def update(self, logit_diff):
+        self.total += 1
+        if logit_diff > 0:
+            self.correct += 1
+
+    def get_acc(self):
+        return self.correct / self.total
 
 
 def get_model_and_tokenizer(model_str, device):
@@ -105,37 +137,52 @@ def logits_to_logit_diff_t(tokenizer, logits, correct_answer, incorrect_answer):
     return logits[0, -1, correct_idx] - logits[0, -1, incorrect_idx]
 
 
-def behavioral_analysis_t(
+def content_effect_eval(
     model,
     tokenizer,
     data,
-    vocabulary,
-    q_type,
-    correct_label,
-    incorrect_label,
-    device,
-    nonce=False,
-    verbose=True
+    partition,
+    args,
+    device
 ):
-    """Evaluate the model on a behavioral task.
-
-    Uses either baseline or nonce data depending on the `nonce` flag.
-    """
-    #data = data_nonce if nonce else data_baseline
+    """Evaluate the model on the content effect task."""
+    assert partition in ["consistent", "inconsistent", "nonsense"]
+    if partition == "consistent":
+        data = data[data["dataset_type"] == "consistent"]
+    elif partition == "inconsistent":
+        data = data[data["dataset_type"] == "inconsistent"]
+    elif partition == "nonsense":
+        data = data[data["dataset_type"] == "nonsense"]
+    
     accuracy = []
-    total_samples = len(data["clean_x"])
-    for i in range(total_samples):
-        if i % 50 == 0 and verbose:
-            print(f"Progress: {round(i / total_samples, 3)}")
-        clean_prompt = data[q_type][i]
-        clean_label = data[correct_label][i]
-        cf_label = data[incorrect_label][i]
-        clean_tokens = tokenizer.encode(clean_prompt, return_tensors="pt").to(model.device)
-        with torch.no_grad():
-            logits = model(clean_tokens).logits
-        accuracy.append(logits_to_logit_diff_t(tokenizer, logits, clean_label, cf_label) > 0)
-    if verbose:
-        print(f"Model Accuracy: {torch.mean(torch.Tensor(accuracy))}")
+    
+    valid_tok = tokenizer(args.valid_token)["input_ids"][1]
+    invalid_tok = tokenizer(args.invalid_token)["input_ids"][1]
+    for i, row in tqdm(data.iterrows(), total=len(data)):
+        question = row["prompt"]
+        gold = row["gold"]
+
+        prompt = eval_prompt(question)
+        inputs = tokenizer(prompt, return_tensors="pt").to(device)
+        outputs = model(inputs["input_ids"]).logits
+
+        if gold == "yes":
+            correct_tok = valid_tok
+            incorrect_tok = invalid_tok
+        else:
+            correct_tok = invalid_tok
+            incorrect_tok = valid_tok
+        
+        max_token = torch.argmax(outputs[0, -1, :]).item()
+        max_prob_tok = tokenizer.decode(max_token).lower().strip()
+
+        if max_token not in [valid_tok, invalid_tok]:
+            print(f"Max token {max_token} ({tokenizer.decode(max_token)}) not in {valid_tok} or {invalid_tok}")
+            continue
+
+        logit_diff = logits_to_logit_diff_t(tokenizer, outputs, correct_tok, incorrect_tok)
+        accuracy.append(logit_diff > 0)
+
     return torch.mean(torch.Tensor(accuracy))
 
 
@@ -143,19 +190,30 @@ def training_loop_temporary_forgetting(
         model,
         tokenizer,
         train_loader,
+        eval_data,
         optimizer,
         scheduler,
         num_steps,
         forget_interval,
         mask_prob=0.1,
         initializer_range=None,
-        vocabulary=None,
-        device=None
+        device=None,
+        args=None
     ):
     """Run the training loop with probabilistic temporary forgetting"""
+    # if model name contains "gemma"
+    if "gemma" in args.model:
+        embedding_layer = model.model.embed_tokens
+    elif "gpt" in args.model:
+        embedding_layer = model.transformer.wte
+    elif "llama" in args.model:
+        embedding_layer = model.model.embed_tokens
+    else:
+        raise ValueError(f"Invalid model: {args.model}")
+
     metrics = {"baseline_acc": {}, "inconsistent_acc": {}, "nonce_acc": {}}
-    if initializer_range is None:
-        initializer_range = model.config.initializer_range
+    
+    initializer_range = model.config.initializer_range
 
     for i, batch in enumerate(tqdm(train_loader)):
         if i > num_steps:
@@ -165,7 +223,7 @@ def training_loop_temporary_forgetting(
         batch = {k: v.to(device) for k, v in batch.items()}
 
         # Clone the original embeddings
-        original_embeddings = model.transformer.wte.weight.data.clone()
+        original_embeddings = embedding_layer.weight.data.clone()
 
         # Find unique tokens in this batch (ignoring pad token)
         unique_tokens = torch.unique(batch["input_ids"])
@@ -180,14 +238,14 @@ def training_loop_temporary_forgetting(
             random_embeddings = torch.normal(
                 mean=0.0,
                 std=initializer_range,
-                size=(tokens_to_replace.size(0), model.transformer.wte.weight.shape[1]),
+                size=(tokens_to_replace.size(0), embedding_layer.weight.shape[1]),
                 device=device,
-                dtype=model.transformer.wte.weight.dtype
+                dtype=embedding_layer.weight.dtype
             )
-            model.transformer.wte.weight.data[tokens_to_replace] = random_embeddings
+            embedding_layer.weight.data[tokens_to_replace] = random_embeddings
 
         # Assert that the LM head weights match the transformer embeddings
-        assert torch.all(model.transformer.wte.weight.data == model.lm_head.weight.data).item()
+        assert torch.all(embedding_layer.weight.data == model.lm_head.weight.data).item()
 
         outputs = model(**batch)
         loss = outputs.loss
@@ -196,35 +254,42 @@ def training_loop_temporary_forgetting(
 
         # Restore original embeddings for the replaced tokens
         with torch.no_grad():
-            model.transformer.wte.weight.data[tokens_to_replace] = original_embeddings[tokens_to_replace]
+            embedding_layer.weight.data[tokens_to_replace] = original_embeddings[tokens_to_replace]
 
-        assert torch.all(model.transformer.wte.weight.data == model.lm_head.weight.data).item()
-        assert torch.all(model.transformer.wte.weight.data == original_embeddings).item()
+        assert torch.all(embedding_layer.weight.data == model.lm_head.weight.data).item()
+        assert torch.all(embedding_layer.weight.data == original_embeddings).item()
 
         # Prevent any update to the embedding weights
-        model.transformer.wte.weight.grad = None
+        embedding_layer.weight.grad = None
 
         optimizer.step()
         scheduler.step()
         optimizer.zero_grad()
 
-        # if i % 100 == 0:
-        #     model.eval()
-        #     baseline_acc = behavioral_analysis_t(
-        #         model, tokenizer, vocabulary, "clean_x", "clean_y", "wrong_y", device, nonce=False, verbose=False
-        #     ).item()
-        #     nonce_acc = behavioral_analysis_t(
-        #         model, tokenizer, vocabulary, "clean_x", "clean_y", "wrong_y", device, nonce=True, verbose=False
-        #     ).item()
-        #     metrics["baseline_acc"][i] = baseline_acc
-        #     metrics["nonce_acc"][i] = nonce_acc
-        #     print(f"Step {i}, Baseline Acc: {baseline_acc}, Nonce Acc: {nonce_acc}")
+        if i % 100 == 0:
+            model.eval()
+            baseline_acc = content_effect_eval(
+                model, tokenizer, eval_data, "consistent", args, device
+            )
+            inconsistent_acc = content_effect_eval(
+                model, tokenizer, eval_data, "inconsistent", args, device
+            )
+            nonsense_acc = content_effect_eval(
+                model, tokenizer, eval_data, "nonsense", args, device
+            )
+            metrics["baseline_acc"][i] = baseline_acc
+            metrics["inconsistent_acc"][i] = inconsistent_acc
+            metrics["nonsense_acc"][i] = nonsense_acc
+            print(f"Step {i}, Baseline Acc: {baseline_acc}, Inconsistent Acc: {inconsistent_acc}, Nonsense Acc: {nonsense_acc}")
 
     return metrics
 
 
 def setup_dataset(tokenizer, args):
-    dataset = load_dataset("parquet", data_files=args.train_data, split="train")
+    if args.train_data == "wikitext":
+        dataset = load_dataset("Salesforce/wikitext", "wikitext-2-v1", split="train")
+    else:
+        raise ValueError(f"Invalid train data: {args.train_data}")
 
     def filter_empty_examples(example):
         return example["text"].strip() != ""
@@ -257,28 +322,30 @@ def main():
 
     model, tokenizer = get_model_and_tokenizer(args.model, args.device)
     train_loader = setup_dataset(tokenizer, args)
-    print("Loaded dataset with {} examples".format(len(train_loader.dataset)))
+    print("Loaded train dataset with {} examples".format(len(train_loader.dataset)))
+
+    eval_data = pd.read_csv(args.eval_data)
+    print("Loaded evaluation data with {} examples".format(len(eval_data)))
 
     total_steps = len(train_loader)
     optimizer = optim.AdamW(model.parameters(), lr=args.learning_rate)
     scheduler = get_linear_schedule_with_warmup(optimizer, num_warmup_steps=500, num_training_steps=total_steps)
 
-    initializer_range = model.config.initializer_range
-
     metrics = training_loop_temporary_forgetting(
         model,
         tokenizer,
         train_loader,
+        eval_data,
         optimizer,
         scheduler,
-        num_steps=args.N,
-        forget_interval=args.k,
-        initializer_range=initializer_range,
-        vocabulary=None,
+        num_steps=args.num_steps,
+        forget_interval=args.forget_interval,
+        device=args.device,
+        args=args
     )
     
     model_name = args.model.split("/")[-1]
-    output_path = f"{args.output_dir}/{model_name}_metrics.json"
+    output_path = f"{args.output_dir}/{'_'.join(args.model.split('/'))}_metrics.json"
     with open(output_path, "w") as f:
         json.dump(metrics, f)
     print(f"Metrics saved to {output_path}")

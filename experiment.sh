@@ -6,8 +6,8 @@
 # for gemma use "Yes" and "No" as the valid and invalid tokens
 
 python finetune.py \
-    --model openai-community/gpt2 \
-    --train_data data/train-00000-of-00001.parquet \
+    --model google/gemma-2-2b-it \
+    --train_data wikitext \
     --eval_data data/eval_prompts.csv \
     --output_dir results \
-    --device cpu
+    --device cuda
