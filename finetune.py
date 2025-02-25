@@ -15,6 +15,7 @@ from transformers import (
     DataCollatorForLanguageModeling,
     get_linear_schedule_with_warmup
 )
+import matplotlib.pyplot as plt
 
 from evaluate import eval_prompt
 
@@ -38,16 +39,28 @@ def parse_args():
     parser.add_argument(
         "-N",
         "--num_steps",
-        default=5000,
         type=int,
-        help="the number of initial steps to perform active forgetting",
+        help="the number of initial steps to perform active forgetting (N)",
+        required=True,
     )
     parser.add_argument(
         "-k",
         "--forget_interval",
-        default=100,
         type=int,
-        help="the frequency of performing active forgetting, k << N",
+        help="K, interval between two consecutive forgetting operations, K << N",
+        required=True,
+    )
+    parser.add_argument(
+        "--eval_interval",
+        type=int,
+        help="the frequency of steps to evaluate the model",
+        default=100,
+    )
+    parser.add_argument(
+        "--total_steps",
+        type=int,
+        help="the total number of training steps to perform",
+        required=True,
     )
     parser.add_argument(
         "-l",
@@ -148,7 +161,7 @@ def content_effect_eval(
         data = data[data["dataset_type"] == "nonsense"]
     
     accuracy = []
-    
+
     valid_index = tokenizer(args.valid_token)["input_ids"][1]
     invalid_index = tokenizer(args.invalid_token)["input_ids"][1]
     for i, row in data.iterrows():
@@ -166,12 +179,12 @@ def content_effect_eval(
             correct_idx = invalid_index
             incorrect_idx = valid_index
         
-        max_token = torch.argmax(logits[0, -1, :]).item()
-        max_prob_tok = tokenizer.decode(max_token).lower().strip()
+        #max_token = torch.argmax(logits[0, -1, :]).item()
+        #max_prob_tok = tokenizer.decode(max_token).lower().strip()
 
-        if max_token not in [valid_index, invalid_index]:
-            print(f"Max token {max_token} ({tokenizer.decode(max_token)}) not in {valid_index} or {invalid_index}")
-            continue    
+        # if max_token not in [valid_index, invalid_index]:
+        #     print(f"Max token {max_token} ({tokenizer.decode(max_token)}) not in {valid_index} or {invalid_index}")
+        #     continue    
 
         logit_diff = logits[0, -1, correct_idx] - logits[0, -1, incorrect_idx]
         accuracy.append(logit_diff > 0)
@@ -209,57 +222,42 @@ def training_loop_temporary_forgetting(
     initializer_range = model.config.initializer_range
 
     for i, batch in enumerate(tqdm(train_loader)):
-        if i > num_steps:
+        if i > args.total_steps:
             break
 
         model.train()
         batch = {k: v.to(device) for k, v in batch.items()}
 
-        # Clone the original embeddings
-        original_embeddings = embedding_layer.weight.data.clone()
+        # Replace token embeddings with random embeddings
+        if i <= num_steps and i % forget_interval == 0 and i > 0:
+            with torch.no_grad():
+                # create element from distribution N(0, 0.02)
+                embedding_layer.weight.data = torch.normal(
+                    mean=0.0,
+                    std=0.02,
+                    size=(embedding_layer.weight.shape[0], embedding_layer.weight.shape[1]),
+                    device=device,
+                    dtype=embedding_layer.weight.dtype
+                )
 
-        # Find unique tokens in this batch (ignoring pad token)
-        unique_tokens = torch.unique(batch["input_ids"])
-        unique_tokens = unique_tokens[unique_tokens != tokenizer.pad_token_id]
-
-        # Randomly select tokens to replace
-        mask = torch.rand(len(unique_tokens), device=device) < mask_prob
-        tokens_to_replace = unique_tokens[mask]
-
-        # Replace selected token embeddings with new random embeddings
-        with torch.no_grad():
-            random_embeddings = torch.normal(
-                mean=0.0,
-                std=initializer_range,
-                size=(tokens_to_replace.size(0), embedding_layer.weight.shape[1]),
-                device=device,
-                dtype=embedding_layer.weight.dtype
-            )
-            embedding_layer.weight.data[tokens_to_replace] = random_embeddings
-
-        # Assert that the LM head weights match the transformer embeddings
-        assert torch.all(embedding_layer.weight.data == model.lm_head.weight.data).item()
+                # embedding_layer.weight.data = torch.normal(
+                #     mean=0.0,
+                #     std=initializer_range,
+                #     size=(N, embedding_layer.weight.shape[1]),
+                #     device=device,
+                #     dtype=embedding_layer.weight.dtype
+                # )
 
         outputs = model(**batch)
         loss = outputs.loss
 
         loss.backward()
 
-        # Restore original embeddings for the replaced tokens
-        with torch.no_grad():
-            embedding_layer.weight.data[tokens_to_replace] = original_embeddings[tokens_to_replace]
-
-        assert torch.all(embedding_layer.weight.data == model.lm_head.weight.data).item()
-        assert torch.all(embedding_layer.weight.data == original_embeddings).item()
-
-        # Prevent any update to the embedding weights
-        embedding_layer.weight.grad = None
-
         optimizer.step()
         scheduler.step()
         optimizer.zero_grad()
 
-        if i % forget_interval == 0:
+        if i % args.eval_interval == 0:
             model.eval()
             baseline_acc = content_effect_eval(
                 model, tokenizer, eval_data, "consistent", args, device
@@ -273,7 +271,7 @@ def training_loop_temporary_forgetting(
             metrics["baseline_acc"][i] = baseline_acc
             metrics["inconsistent_acc"][i] = inconsistent_acc
             metrics["nonsense_acc"][i] = nonsense_acc
-            print(f"Step {i}, Baseline Acc: {baseline_acc}, Inconsistent Acc: {inconsistent_acc}, Nonsense Acc: {nonsense_acc}")
+            print(f"\nStep {i}, Baseline Acc: {baseline_acc}, Inconsistent Acc: {inconsistent_acc}, Nonsense Acc: {nonsense_acc}")
 
     return metrics
 
@@ -310,6 +308,38 @@ def setup_dataset(tokenizer, args):
     )
     return train_loader
 
+def plot_metrics(metrics, args):
+    """
+    Create a plot for the training dynamics of the models.
+    """
+    # Create a figure and axis
+    plt.figure(figsize=(10, 6))
+
+    # Plot each accuracy metric
+    steps = list(metrics["baseline_acc"].keys())
+    steps = [int(x) for x in steps]
+    
+    baseline_acc = list(metrics["baseline_acc"].values())
+    inconsistent_acc = list(metrics["inconsistent_acc"].values()) 
+    nonsense_acc = list(metrics["nonsense_acc"].values())
+
+    plt.plot(steps, baseline_acc, label='Consistent', color='#2ecc71', marker='o')
+    plt.plot(steps, inconsistent_acc, label='Inconsistent', color='#e74c3c', marker='s')
+    plt.plot(steps, nonsense_acc, label='Nonsense', color='#3498db', marker='^')
+
+    plt.xlabel('Step')
+    plt.xlim(0, max(steps))
+    plt.ylabel('Accuracy')
+    plt.title(f"{args.model.split('/')[-1]} Training Dynamics (N={args.num_steps}, k={args.forget_interval})")
+    plt.legend()
+    plt.grid(True, linestyle='--', alpha=0.7)
+
+    # Save plot
+    plt.tight_layout()
+    plt.savefig(f'{args.output_dir}/{args.model.split("/")[-1]}_N{args.num_steps}k{args.forget_interval}_dynamics.png')
+    plt.close()
+
+
 def main():
     args = parse_args()
 
@@ -322,7 +352,7 @@ def main():
 
     total_steps = len(train_loader)
     optimizer = optim.AdamW(model.parameters(), lr=args.learning_rate)
-    scheduler = get_linear_schedule_with_warmup(optimizer, num_warmup_steps=500, num_training_steps=total_steps)
+    scheduler = get_linear_schedule_with_warmup(optimizer, num_warmup_steps=5, num_training_steps=total_steps)
 
     metrics = training_loop_temporary_forgetting(
         model,
@@ -337,12 +367,7 @@ def main():
         args=args
     )
     
-    model_name = args.model.split("/")[-1]
-    hyperparams = f"N{args.num_steps}k{args.forget_interval}"
-    output_path = f"{args.output_dir}/{'_'.join(args.model.split('/'))}_{hyperparams}_metrics.json"
-    with open(output_path, "w") as f:
-        json.dump(metrics, f)
-    print(f"Metrics saved to {output_path}")
+    plot_metrics(metrics, args)
 
 if __name__ == "__main__":
     main()

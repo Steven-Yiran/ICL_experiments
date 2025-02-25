@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import glob
 
-# Load all evaluation results
+# Load all metrics results
 eval_files = glob.glob("results/*_eval.csv")
 all_results = []
 for file in eval_files:
