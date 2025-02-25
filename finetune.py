@@ -64,7 +64,7 @@ def parse_args():
     )
     parser.add_argument(
         "--batch_size",
-        default=16,
+        default=2,
         type=int,
         help="the batch size",
     )
@@ -124,17 +124,10 @@ class LogitDiffAccuracy:
 
 
 def get_model_and_tokenizer(model_str, device):
-    model = AutoModelForCausalLM.from_pretrained(model_str, torch_dtype=torch.bfloat16).to(device)
+    model = AutoModelForCausalLM.from_pretrained(model_str, torch_dtype=torch.bfloat16, attn_implementation="eager").to(device)
     tokenizer = AutoTokenizer.from_pretrained(model_str)
     tokenizer.pad_token = tokenizer.eos_token
     return model, tokenizer
-
-
-def logits_to_logit_diff_t(tokenizer, logits, correct_answer, incorrect_answer):
-    """Compute logit difference between correct and incorrect answers."""
-    correct_idx = tokenizer.encode(correct_answer)[0]
-    incorrect_idx = tokenizer.encode(incorrect_answer)[0]
-    return logits[0, -1, correct_idx] - logits[0, -1, incorrect_idx]
 
 
 def content_effect_eval(
@@ -143,7 +136,7 @@ def content_effect_eval(
     data,
     partition,
     args,
-    device
+    device,
 ):
     """Evaluate the model on the content effect task."""
     assert partition in ["consistent", "inconsistent", "nonsense"]
@@ -156,34 +149,34 @@ def content_effect_eval(
     
     accuracy = []
     
-    valid_tok = tokenizer(args.valid_token)["input_ids"][1]
-    invalid_tok = tokenizer(args.invalid_token)["input_ids"][1]
-    for i, row in tqdm(data.iterrows(), total=len(data)):
+    valid_index = tokenizer(args.valid_token)["input_ids"][1]
+    invalid_index = tokenizer(args.invalid_token)["input_ids"][1]
+    for i, row in data.iterrows():
         question = row["prompt"]
         gold = row["gold"]
 
         prompt = eval_prompt(question)
         inputs = tokenizer(prompt, return_tensors="pt").to(device)
-        outputs = model(inputs["input_ids"]).logits
+        logits = model(inputs["input_ids"]).logits
 
         if gold == "yes":
-            correct_tok = valid_tok
-            incorrect_tok = invalid_tok
+            correct_idx = valid_index
+            incorrect_idx = invalid_index
         else:
-            correct_tok = invalid_tok
-            incorrect_tok = valid_tok
+            correct_idx = invalid_index
+            incorrect_idx = valid_index
         
-        max_token = torch.argmax(outputs[0, -1, :]).item()
+        max_token = torch.argmax(logits[0, -1, :]).item()
         max_prob_tok = tokenizer.decode(max_token).lower().strip()
 
-        if max_token not in [valid_tok, invalid_tok]:
-            print(f"Max token {max_token} ({tokenizer.decode(max_token)}) not in {valid_tok} or {invalid_tok}")
-            continue
+        if max_token not in [valid_index, invalid_index]:
+            print(f"Max token {max_token} ({tokenizer.decode(max_token)}) not in {valid_index} or {invalid_index}")
+            continue    
 
-        logit_diff = logits_to_logit_diff_t(tokenizer, outputs, correct_tok, incorrect_tok)
+        logit_diff = logits[0, -1, correct_idx] - logits[0, -1, incorrect_idx]
         accuracy.append(logit_diff > 0)
 
-    return torch.mean(torch.Tensor(accuracy))
+    return torch.mean(torch.Tensor(accuracy)).item()
 
 
 def training_loop_temporary_forgetting(
@@ -211,7 +204,7 @@ def training_loop_temporary_forgetting(
     else:
         raise ValueError(f"Invalid model: {args.model}")
 
-    metrics = {"baseline_acc": {}, "inconsistent_acc": {}, "nonce_acc": {}}
+    metrics = {"baseline_acc": {}, "inconsistent_acc": {}, "nonsense_acc": {}}
     
     initializer_range = model.config.initializer_range
 
@@ -266,7 +259,7 @@ def training_loop_temporary_forgetting(
         scheduler.step()
         optimizer.zero_grad()
 
-        if i % 100 == 0:
+        if i % forget_interval == 0:
             model.eval()
             baseline_acc = content_effect_eval(
                 model, tokenizer, eval_data, "consistent", args, device
@@ -345,7 +338,8 @@ def main():
     )
     
     model_name = args.model.split("/")[-1]
-    output_path = f"{args.output_dir}/{'_'.join(args.model.split('/'))}_metrics.json"
+    hyperparams = f"N{args.num_steps}k{args.forget_interval}"
+    output_path = f"{args.output_dir}/{'_'.join(args.model.split('/'))}_{hyperparams}_metrics.json"
     with open(output_path, "w") as f:
         json.dump(metrics, f)
     print(f"Metrics saved to {output_path}")

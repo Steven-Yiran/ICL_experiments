@@ -6,3 +6,4 @@
 git_setup.sh
 *.parquet
 __pycache__/
+*.log
