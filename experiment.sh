@@ -1,9 +1,11 @@
 #! /bin/bash
 
+# options: meta-llama/Llama-3.2-3B-Instruct, google/gemma-2-2b-it
 MODEL="google/gemma-2-2b-it"
-NUM_STEPS=1000
-FORGET_INTERVAL=50
-TOTAL_STEPS=2000
+TOTAL_STEPS=500
+NUM_STEPS=500
+FORGET_INTERVAL=100
+EVAL_INTERVAL=25
 if [[ "$MODEL" =~ "gemma" ]]; then
     VALID_TOKEN=" Yes"
     INVALID_TOKEN=" No"
@@ -30,7 +32,7 @@ python finetune.py \
     --num_steps $NUM_STEPS \
     --forget_interval $FORGET_INTERVAL \
     --total_steps $TOTAL_STEPS \
-    --eval_interval 100 \
+    --eval_interval $EVAL_INTERVAL \
     --batch_size 4 \
     --valid_token $VALID_TOKEN \
     --invalid_token $INVALID_TOKEN \

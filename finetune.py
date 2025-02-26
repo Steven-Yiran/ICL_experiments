@@ -178,13 +178,6 @@ def content_effect_eval(
         else:
             correct_idx = invalid_index
             incorrect_idx = valid_index
-        
-        #max_token = torch.argmax(logits[0, -1, :]).item()
-        #max_prob_tok = tokenizer.decode(max_token).lower().strip()
-
-        # if max_token not in [valid_index, invalid_index]:
-        #     print(f"Max token {max_token} ({tokenizer.decode(max_token)}) not in {valid_index} or {invalid_index}")
-        #     continue    
 
         logit_diff = logits[0, -1, correct_idx] - logits[0, -1, incorrect_idx]
         accuracy.append(logit_diff > 0)
@@ -228,30 +221,48 @@ def training_loop_temporary_forgetting(
         model.train()
         batch = {k: v.to(device) for k, v in batch.items()}
 
-        # Replace token embeddings with random embeddings
-        if i <= num_steps and i % forget_interval == 0 and i > 0:
+        do_forgetting = i > 0 and i % forget_interval == 0
+        if do_forgetting:
+            # Clone the original embeddings
+            original_embeddings = embedding_layer.weight.data.clone()
+
+            # Find unique tokens in this batch (ignoring pad token)
+            unique_tokens = torch.unique(batch["input_ids"])
+            unique_tokens = unique_tokens[unique_tokens != tokenizer.pad_token_id]
+
+            # Randomly select tokens to replace
+            mask = torch.rand(len(unique_tokens), device=device) < mask_prob
+            tokens_to_replace = unique_tokens[mask]
+
+            # Replace selected token embeddings with new random embeddings
             with torch.no_grad():
-                # create element from distribution N(0, 0.02)
-                embedding_layer.weight.data = torch.normal(
+                random_embeddings = torch.normal(
                     mean=0.0,
-                    std=0.02,
-                    size=(embedding_layer.weight.shape[0], embedding_layer.weight.shape[1]),
+                    std=initializer_range,
+                    size=(tokens_to_replace.size(0), embedding_layer.weight.shape[1]),
                     device=device,
                     dtype=embedding_layer.weight.dtype
                 )
+                embedding_layer.weight.data[tokens_to_replace] = random_embeddings
 
-                # embedding_layer.weight.data = torch.normal(
-                #     mean=0.0,
-                #     std=initializer_range,
-                #     size=(N, embedding_layer.weight.shape[1]),
-                #     device=device,
-                #     dtype=embedding_layer.weight.dtype
-                # )
+            # Assert that the LM head weights match the transformer embeddings
+            assert torch.all(embedding_layer.weight.data == model.lm_head.weight.data).item()
 
         outputs = model(**batch)
         loss = outputs.loss
 
         loss.backward()
+
+        if do_forgetting:
+            # Restore original embeddings for the replaced tokens
+            with torch.no_grad():
+                embedding_layer.weight.data[tokens_to_replace] = original_embeddings[tokens_to_replace]
+
+            assert torch.all(embedding_layer.weight.data == model.lm_head.weight.data).item()
+            assert torch.all(embedding_layer.weight.data == original_embeddings).item()
+
+            # Prevent any update to the embedding weights
+            embedding_layer.weight.grad = None
 
         optimizer.step()
         scheduler.step()
