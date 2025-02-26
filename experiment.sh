@@ -1,26 +1,18 @@
-#! /bin/bash
+#!/bin/bash
 
 # options: meta-llama/Llama-3.2-3B-Instruct, google/gemma-2-2b-it
-MODEL="google/gemma-2-2b-it"
-TOTAL_STEPS=500
-NUM_STEPS=500
-FORGET_INTERVAL=100
-EVAL_INTERVAL=25
-if [[ "$MODEL" =~ "gemma" ]]; then
-    VALID_TOKEN=" Yes"
-    INVALID_TOKEN=" No"
-elif [[ "$MODEL" =~ "llama" ]]; then
-    VALID_TOKEN=" Yes"
-    INVALID_TOKEN=" No"
-else
-    VALID_TOKEN="Unknown"
-    INVALID_TOKEN="Unknown"
-fi
+MODEL="meta-llama/Llama-3.2-3B-Instruct"
+TOTAL_STEPS=100
+NUM_FORGET_STEPS=0
+FORGET_INTERVAL=0
+EVAL_INTERVAL=50
+VALID_TOKEN="Yes" # "Yes"
+INVALID_TOKEN="No" # "No"
 
 echo "Model: $MODEL"
 echo "Valid token: $VALID_TOKEN"
 echo "Invalid token: $INVALID_TOKEN"
-echo "N: $NUM_STEPS"
+echo "N: $NUM_FORGET_STEPS"
 echo "k: $FORGET_INTERVAL"
 echo "Total steps: $TOTAL_STEPS"
 
@@ -29,7 +21,7 @@ python finetune.py \
     --train_data wikitext \
     --eval_data data/eval_prompts.csv \
     --output_dir results \
-    --num_steps $NUM_STEPS \
+    --num_forget_steps $NUM_FORGET_STEPS \
     --forget_interval $FORGET_INTERVAL \
     --total_steps $TOTAL_STEPS \
     --eval_interval $EVAL_INTERVAL \

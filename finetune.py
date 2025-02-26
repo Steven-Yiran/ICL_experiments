@@ -38,7 +38,7 @@ def parse_args():
     )
     parser.add_argument(
         "-N",
-        "--num_steps",
+        "--num_forget_steps",
         type=int,
         help="the number of initial steps to perform active forgetting (N)",
         required=True,
@@ -135,6 +135,27 @@ class LogitDiffAccuracy:
     def get_acc(self):
         return self.correct / self.total
 
+class TopKAccuracy:
+    """
+    Compute the accuracy of the model based on the top-k accuracy.
+    """
+    def __init__(self, k=1):
+        self.k = k
+        self.correct = 0
+        self.total = 0
+
+    def update(self, logits, gold):
+        self.total += 1
+        # Get top k predictions
+        topk_values, topk_indices = torch.topk(logits[0, -1], self.k)
+        
+        # Check if gold token is in top k predictions
+        if gold in topk_indices:
+            self.correct += 1
+
+    def get_acc(self):
+        return self.correct / self.total
+
 
 def get_model_and_tokenizer(model_str, device):
     model = AutoModelForCausalLM.from_pretrained(model_str, torch_dtype=torch.bfloat16, attn_implementation="eager").to(device)
@@ -148,6 +169,8 @@ def content_effect_eval(
     tokenizer,
     data,
     partition,
+    valid_idx,
+    invalid_idx,
     args,
     device,
 ):
@@ -161,9 +184,8 @@ def content_effect_eval(
         data = data[data["dataset_type"] == "nonsense"]
     
     accuracy = []
+    skip_count = 0
 
-    valid_index = tokenizer(args.valid_token)["input_ids"][1]
-    invalid_index = tokenizer(args.invalid_token)["input_ids"][1]
     for i, row in data.iterrows():
         question = row["prompt"]
         gold = row["gold"]
@@ -172,15 +194,25 @@ def content_effect_eval(
         inputs = tokenizer(prompt, return_tensors="pt").to(device)
         logits = model(inputs["input_ids"]).logits
 
+        # Get top 5 tokens
+        top5_values, top5_indices = torch.topk(logits[0, -1], 5)
+        
+        # Skip if neither valid nor invalid token in top 5
+        if valid_idx not in top5_indices and invalid_idx not in top5_indices:
+            skip_count += 1
+            continue
+
         if gold == "yes":
-            correct_idx = valid_index
-            incorrect_idx = invalid_index
+            correct_idx = valid_idx
+            incorrect_idx = invalid_idx
         else:
-            correct_idx = invalid_index
-            incorrect_idx = valid_index
+            correct_idx = invalid_idx
+            incorrect_idx = valid_idx
 
         logit_diff = logits[0, -1, correct_idx] - logits[0, -1, incorrect_idx]
         accuracy.append(logit_diff > 0)
+
+    print(f"Skipped {skip_count} examples")
 
     return torch.mean(torch.Tensor(accuracy)).item()
 
@@ -192,8 +224,10 @@ def training_loop_temporary_forgetting(
         eval_data,
         optimizer,
         scheduler,
-        num_steps,
+        num_forget_steps,
         forget_interval,
+        valid_idx,
+        invalid_idx,
         mask_prob=0.1,
         initializer_range=None,
         device=None,
@@ -210,7 +244,12 @@ def training_loop_temporary_forgetting(
     else:
         raise ValueError(f"Invalid model: {args.model}")
 
-    metrics = {"baseline_acc": {}, "inconsistent_acc": {}, "nonsense_acc": {}}
+    metrics = {
+        "baseline_acc": {},
+        "inconsistent_acc": {},
+        "nonsense_acc": {},
+        "loss": {}
+    }
     
     initializer_range = model.config.initializer_range
 
@@ -221,7 +260,7 @@ def training_loop_temporary_forgetting(
         model.train()
         batch = {k: v.to(device) for k, v in batch.items()}
 
-        do_forgetting = i > 0 and i % forget_interval == 0
+        do_forgetting = i > 0 and i < num_forget_steps and i % forget_interval == 0
         if do_forgetting:
             # Clone the original embeddings
             original_embeddings = embedding_layer.weight.data.clone()
@@ -250,7 +289,7 @@ def training_loop_temporary_forgetting(
 
         outputs = model(**batch)
         loss = outputs.loss
-
+        metrics["loss"][i] = loss.item()
         loss.backward()
 
         if do_forgetting:
@@ -271,18 +310,18 @@ def training_loop_temporary_forgetting(
         if i % args.eval_interval == 0:
             model.eval()
             baseline_acc = content_effect_eval(
-                model, tokenizer, eval_data, "consistent", args, device
+                model, tokenizer, eval_data, "consistent", valid_idx, invalid_idx, args, device
             )
             inconsistent_acc = content_effect_eval(
-                model, tokenizer, eval_data, "inconsistent", args, device
+                model, tokenizer, eval_data, "inconsistent", valid_idx, invalid_idx, args, device
             )
             nonsense_acc = content_effect_eval(
-                model, tokenizer, eval_data, "nonsense", args, device
+                model, tokenizer, eval_data, "nonsense", valid_idx, invalid_idx, args, device
             )
             metrics["baseline_acc"][i] = baseline_acc
             metrics["inconsistent_acc"][i] = inconsistent_acc
             metrics["nonsense_acc"][i] = nonsense_acc
-            print(f"\nStep {i}, Baseline Acc: {baseline_acc}, Inconsistent Acc: {inconsistent_acc}, Nonsense Acc: {nonsense_acc}")
+            print(f"\nStep {i}, Loss: {loss.item():.3f}, Baseline Acc: {baseline_acc:.3f}, Inconsistent Acc: {inconsistent_acc:.3f}, Nonsense Acc: {nonsense_acc:.3f}")
 
     return metrics
 
@@ -323,10 +362,11 @@ def plot_metrics(metrics, args):
     """
     Create a plot for the training dynamics of the models.
     """
-    # Create a figure and axis
-    plt.figure(figsize=(10, 6))
+    # Create figure with two y-axes
+    fig, ax1 = plt.subplots(figsize=(10, 6))
+    ax2 = ax1.twinx()
 
-    # Plot each accuracy metric
+    # Plot each accuracy metric on the first y-axis
     steps = list(metrics["baseline_acc"].keys())
     steps = [int(x) for x in steps]
     
@@ -334,20 +374,31 @@ def plot_metrics(metrics, args):
     inconsistent_acc = list(metrics["inconsistent_acc"].values()) 
     nonsense_acc = list(metrics["nonsense_acc"].values())
 
-    plt.plot(steps, baseline_acc, label='Consistent', color='#2ecc71', marker='o')
-    plt.plot(steps, inconsistent_acc, label='Inconsistent', color='#e74c3c', marker='s')
-    plt.plot(steps, nonsense_acc, label='Nonsense', color='#3498db', marker='^')
+    ax1.plot(steps, baseline_acc, label='Consistent', color='#2ecc71', marker='o')
+    ax1.plot(steps, inconsistent_acc, label='Inconsistent', color='#e74c3c', marker='s')
+    ax1.plot(steps, nonsense_acc, label='Nonsense', color='#3498db', marker='^')
+    ax1.set_xlabel('Step')
+    ax1.set_ylabel('Accuracy')
+    ax1.set_xlim(0, max(steps))
 
-    plt.xlabel('Step')
-    plt.xlim(0, max(steps))
-    plt.ylabel('Accuracy')
-    plt.title(f"{args.model.split('/')[-1]} Training Dynamics (N={args.num_steps}, k={args.forget_interval})")
-    plt.legend()
+    # Plot loss on the second y-axis
+    loss_steps = list(metrics["loss"].keys())
+    loss_steps = [int(x) for x in loss_steps]
+    losses = list(metrics["loss"].values())
+    ax2.plot(loss_steps, losses, label='Loss', color='#9b59b6', linestyle='--')
+    ax2.set_ylabel('Loss')
+
+    # Add legends for both axes
+    lines1, labels1 = ax1.get_legend_handles_labels()
+    lines2, labels2 = ax2.get_legend_handles_labels()
+    ax1.legend(lines1 + lines2, labels1 + labels2, loc='upper right')
+
+    plt.title(f"{args.model.split('/')[-1]} Training Dynamics (N={args.num_forget_steps}, k={args.forget_interval})")
     plt.grid(True, linestyle='--', alpha=0.7)
 
     # Save plot
     plt.tight_layout()
-    plt.savefig(f'{args.output_dir}/{args.model.split("/")[-1]}_N{args.num_steps}k{args.forget_interval}_dynamics.png')
+    plt.savefig(f'{args.output_dir}/{args.model.split("/")[-1]}_N{args.num_forget_steps}k{args.forget_interval}_dynamics.png')
     plt.close()
 
 
@@ -355,6 +406,16 @@ def main():
     args = parse_args()
 
     model, tokenizer = get_model_and_tokenizer(args.model, args.device)
+    # if  gemma family model, use " Yes" and " No" as valid and invalid tokens
+    if "gemma" in args.model:
+        valid_idx = tokenizer(" Yes")["input_ids"][1]
+        invalid_idx = tokenizer(" No")["input_ids"][1]
+    elif "llama" in args.model:
+        valid_idx = tokenizer(" Yes", add_special_tokens=False)["input_ids"][0]
+        invalid_idx = tokenizer(" No", add_special_tokens=False)["input_ids"][0]
+    else:
+        raise ValueError(f"Invalid model: {args.model}")
+
     train_loader = setup_dataset(tokenizer, args)
     print("Loaded train dataset with {} examples".format(len(train_loader.dataset)))
 
@@ -372,10 +433,12 @@ def main():
         eval_data,
         optimizer,
         scheduler,
-        num_steps=args.num_steps,
+        num_forget_steps=args.num_forget_steps,
         forget_interval=args.forget_interval,
         device=args.device,
-        args=args
+        args=args,
+        valid_idx=valid_idx,
+        invalid_idx=invalid_idx
     )
     
     plot_metrics(metrics, args)
