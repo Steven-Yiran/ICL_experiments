@@ -97,6 +97,11 @@ def parse_args():
         help="path to the evaluation data",
     )
     parser.add_argument(
+        "--mask_prob",
+        type=float,
+        help="the probability of masking a token in an entry",
+    )
+    parser.add_argument(
         "-v",
         "--valid_token",
         default=" Yes",
@@ -159,6 +164,7 @@ class TopKAccuracy:
 
 def get_model_and_tokenizer(model_str, device):
     model = AutoModelForCausalLM.from_pretrained(model_str, torch_dtype=torch.bfloat16, attn_implementation="eager").to(device)
+   #model = AutoModelForCausalLM.from_pretrained(model_str, torch_dtype=torch.bfloat16).to(device)
     tokenizer = AutoTokenizer.from_pretrained(model_str)
     tokenizer.pad_token = tokenizer.eos_token
     return model, tokenizer
@@ -176,13 +182,7 @@ def content_effect_eval(
 ):
     """Evaluate the model on the content effect task."""
     assert partition in ["consistent", "inconsistent", "nonsense"]
-    if partition == "consistent":
-        data = data[data["dataset_type"] == "consistent"]
-    elif partition == "inconsistent":
-        data = data[data["dataset_type"] == "inconsistent"]
-    elif partition == "nonsense":
-        data = data[data["dataset_type"] == "nonsense"]
-    
+    data = data[data["dataset_type"] == partition]
     accuracy = []
     skip_count = 0
 
@@ -194,12 +194,14 @@ def content_effect_eval(
         inputs = tokenizer(prompt, return_tensors="pt").to(device)
         logits = model(inputs["input_ids"]).logits
 
-        # Get top 5 tokens
-        top5_values, top5_indices = torch.topk(logits[0, -1], 5)
-        
+        #Get top 5 tokens
+        _, top5_indices = torch.topk(logits[0, -1], 5)
+        # convert top5_indices to tokens
+        top5_tokens = tokenizer.convert_ids_to_tokens(top5_indices)
         # Skip if neither valid nor invalid token in top 5
         if valid_idx not in top5_indices and invalid_idx not in top5_indices:
             skip_count += 1
+            print(f"valid_idx: {valid_idx}, invalid_idx: {invalid_idx}, top5_indices: {top5_indices}")
             continue
 
         if gold == "yes":
@@ -212,7 +214,8 @@ def content_effect_eval(
         logit_diff = logits[0, -1, correct_idx] - logits[0, -1, incorrect_idx]
         accuracy.append(logit_diff > 0)
 
-    print(f"Skipped {skip_count} examples")
+    if skip_count > 0:
+        print(f"Skipped {skip_count} examples")
 
     return torch.mean(torch.Tensor(accuracy)).item()
 
@@ -228,7 +231,7 @@ def training_loop_temporary_forgetting(
         forget_interval,
         valid_idx,
         invalid_idx,
-        mask_prob=0.1,
+        mask_prob,
         initializer_range=None,
         device=None,
         args=None
@@ -257,6 +260,22 @@ def training_loop_temporary_forgetting(
         if i > args.total_steps:
             break
 
+        if i % args.eval_interval == 0:
+            model.eval()
+            baseline_acc = content_effect_eval(
+                model, tokenizer, eval_data, "consistent", valid_idx, invalid_idx, args, device
+            )
+            inconsistent_acc = content_effect_eval(
+                model, tokenizer, eval_data, "inconsistent", valid_idx, invalid_idx, args, device
+            )
+            nonsense_acc = content_effect_eval(
+                model, tokenizer, eval_data, "nonsense", valid_idx, invalid_idx, args, device
+            )
+            metrics["baseline_acc"][i] = baseline_acc
+            metrics["inconsistent_acc"][i] = inconsistent_acc
+            metrics["nonsense_acc"][i] = nonsense_acc
+            print(f"Step {i}, Baseline Acc: {baseline_acc:.3f}, Inconsistent Acc: {inconsistent_acc:.3f}, Nonsense Acc: {nonsense_acc:.3f}")
+            exit()
         model.train()
         batch = {k: v.to(device) for k, v in batch.items()}
 
@@ -306,22 +325,6 @@ def training_loop_temporary_forgetting(
         optimizer.step()
         scheduler.step()
         optimizer.zero_grad()
-
-        if i % args.eval_interval == 0:
-            model.eval()
-            baseline_acc = content_effect_eval(
-                model, tokenizer, eval_data, "consistent", valid_idx, invalid_idx, args, device
-            )
-            inconsistent_acc = content_effect_eval(
-                model, tokenizer, eval_data, "inconsistent", valid_idx, invalid_idx, args, device
-            )
-            nonsense_acc = content_effect_eval(
-                model, tokenizer, eval_data, "nonsense", valid_idx, invalid_idx, args, device
-            )
-            metrics["baseline_acc"][i] = baseline_acc
-            metrics["inconsistent_acc"][i] = inconsistent_acc
-            metrics["nonsense_acc"][i] = nonsense_acc
-            print(f"\nStep {i}, Loss: {loss.item():.3f}, Baseline Acc: {baseline_acc:.3f}, Inconsistent Acc: {inconsistent_acc:.3f}, Nonsense Acc: {nonsense_acc:.3f}")
 
     return metrics
 
@@ -406,16 +409,13 @@ def main():
     args = parse_args()
 
     model, tokenizer = get_model_and_tokenizer(args.model, args.device)
-    # if  gemma family model, use " Yes" and " No" as valid and invalid tokens
-    if "gemma" in args.model:
-        valid_idx = tokenizer(" Yes")["input_ids"][1]
-        invalid_idx = tokenizer(" No")["input_ids"][1]
-    elif "llama" in args.model:
-        valid_idx = tokenizer(" Yes", add_special_tokens=False)["input_ids"][0]
-        invalid_idx = tokenizer(" No", add_special_tokens=False)["input_ids"][0]
-    else:
-        raise ValueError(f"Invalid model: {args.model}")
-
+    valid_idx = tokenizer(args.valid_token, add_special_tokens=False)["input_ids"][0]
+    invalid_idx = tokenizer(" Yes", add_special_tokens=False)["input_ids"][0]
+    invalid_idx = tokenizer(" No", add_special_tokens=False)["input_ids"][0]
+    #print(f"valid_idx: {valid_idx}, invalid_idx: {invalid_idx}")
+    # check 7566 in the tokenizer vocab
+    #print(tokenizer.convert_ids_to_tokens(2360))
+    #exit()
     train_loader = setup_dataset(tokenizer, args)
     print("Loaded train dataset with {} examples".format(len(train_loader.dataset)))
 
@@ -424,7 +424,14 @@ def main():
 
     total_steps = len(train_loader)
     optimizer = optim.AdamW(model.parameters(), lr=args.learning_rate)
-    scheduler = get_linear_schedule_with_warmup(optimizer, num_warmup_steps=5, num_training_steps=total_steps)
+    scheduler = get_linear_schedule_with_warmup(optimizer, num_warmup_steps=10, num_training_steps=total_steps)
+
+    model.eval()
+    baseline_acc = content_effect_eval(
+        model, tokenizer, eval_data, "consistent", valid_idx, invalid_idx, args, args.device
+    )
+    print(f"Baseline Acc: {baseline_acc:.3f}")
+    exit()
 
     metrics = training_loop_temporary_forgetting(
         model,
@@ -438,7 +445,8 @@ def main():
         device=args.device,
         args=args,
         valid_idx=valid_idx,
-        invalid_idx=invalid_idx
+        invalid_idx=invalid_idx,
+        mask_prob=args.mask_prob
     )
     
     plot_metrics(metrics, args)
