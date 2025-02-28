@@ -124,31 +124,31 @@ def evaluate(model, tokenizer, data, args):
             correct_tok = invalid_tok
             incorrect_tok = valid_tok
         
-        max_token = torch.argmax(outputs[0, -1, :]).item()
-        max_prob_tok = tokenizer.decode(max_token).lower().strip()
+        # max_token = torch.argmax(outputs[0, -1, :]).item()
+        # max_prob_tok = tokenizer.decode(max_token).lower().strip()
         
-        if max_token not in [valid_tok, invalid_tok]:
-            print(f"Max token {max_token} ({tokenizer.decode(max_token)}) not in {valid_tok} or {invalid_tok}")
-            continue
+        # if max_token not in [valid_tok, invalid_tok]:
+        #     print(f"Max token {max_token} ({tokenizer.decode(max_token)}) not in {valid_tok} or {invalid_tok}")
+        #     continue
 
         if dataset_type == "consistent":
             consistent_logit_acc.update(outputs[0, -1, correct_tok], outputs[0, -1, incorrect_tok])
-            consistent_exact_match_acc.update(max_prob_tok, gold)
+            #consistent_exact_match_acc.update(max_prob_tok, gold)
         elif dataset_type == "inconsistent":
             inconsistent_logit_acc.update(outputs[0, -1, correct_tok], outputs[0, -1, incorrect_tok])
-            inconsistent_exact_match_acc.update(max_prob_tok, gold)
+            #inconsistent_exact_match_acc.update(max_prob_tok, gold)
         else:
             nonsense_logit_acc.update(outputs[0, -1, correct_tok], outputs[0, -1, incorrect_tok])
-            nonsense_exact_match_acc.update(max_prob_tok, gold)
+            #nonsense_exact_match_acc.update(max_prob_tok, gold)
 
     return {
         "model": [args.model],
         "consistent_logit_acc": [consistent_logit_acc.get_acc()],
         "inconsistent_logit_acc": [inconsistent_logit_acc.get_acc()],
         "nonsense_logit_acc": [nonsense_logit_acc.get_acc()],
-        "consistent_exact_match_acc": [consistent_exact_match_acc.get_acc()],
-        "inconsistent_exact_match_acc": [inconsistent_exact_match_acc.get_acc()],
-        "nonsense_exact_match_acc": [nonsense_exact_match_acc.get_acc()]
+        #"consistent_exact_match_acc": [consistent_exact_match_acc.get_acc()],
+        #"inconsistent_exact_match_acc": [inconsistent_exact_match_acc.get_acc()],
+        #"nonsense_exact_match_acc": [nonsense_exact_match_acc.get_acc()]
     }
 
 

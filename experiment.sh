@@ -32,4 +32,5 @@ python finetune.py \
     --invalid_token $INVALID_TOKEN \
     --learning_rate $LEARNING_RATE \
     --mask_prob $MASK_PROB \
+    --finetune \
     --device cuda

@@ -114,6 +114,11 @@ def parse_args():
         help="token to use for responding ``invalid''",
     )
     parser.add_argument(
+        "--finetune",
+        action="store_true",
+        help="whether to finetune the model",
+    )
+    parser.add_argument(
         "--output_dir",
         default="results",
         help="path to the output directory",
