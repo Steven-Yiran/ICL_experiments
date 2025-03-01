@@ -17,7 +17,12 @@ from transformers import (
 )
 import matplotlib.pyplot as plt
 
-from evaluate import eval_prompt
+from utils import (
+    eval_prompt,
+    evaluate,
+    LogitAccuracy,
+    get_model_and_tokenizer
+)
 
 
 def parse_args():
@@ -114,11 +119,6 @@ def parse_args():
         help="token to use for responding ``invalid''",
     )
     parser.add_argument(
-        "--finetune",
-        action="store_true",
-        help="whether to finetune the model",
-    )
-    parser.add_argument(
         "--output_dir",
         default="results",
         help="path to the output directory",
@@ -165,14 +165,6 @@ class TopKAccuracy:
 
     def get_acc(self):
         return self.correct / self.total
-
-
-def get_model_and_tokenizer(model_str, device):
-    model = AutoModelForCausalLM.from_pretrained(model_str, torch_dtype=torch.bfloat16, attn_implementation="eager").to(device)
-   #model = AutoModelForCausalLM.from_pretrained(model_str, torch_dtype=torch.bfloat16).to(device)
-    tokenizer = AutoTokenizer.from_pretrained(model_str)
-    tokenizer.pad_token = tokenizer.eos_token
-    return model, tokenizer
 
 
 def content_effect_eval(
@@ -234,8 +226,6 @@ def training_loop_temporary_forgetting(
         scheduler,
         num_forget_steps,
         forget_interval,
-        valid_idx,
-        invalid_idx,
         mask_prob,
         initializer_range=None,
         device=None,
@@ -265,22 +255,6 @@ def training_loop_temporary_forgetting(
         if i > args.total_steps:
             break
 
-        if i % args.eval_interval == 0:
-            model.eval()
-            baseline_acc = content_effect_eval(
-                model, tokenizer, eval_data, "consistent", valid_idx, invalid_idx, args, device
-            )
-            inconsistent_acc = content_effect_eval(
-                model, tokenizer, eval_data, "inconsistent", valid_idx, invalid_idx, args, device
-            )
-            nonsense_acc = content_effect_eval(
-                model, tokenizer, eval_data, "nonsense", valid_idx, invalid_idx, args, device
-            )
-            metrics["baseline_acc"][i] = baseline_acc
-            metrics["inconsistent_acc"][i] = inconsistent_acc
-            metrics["nonsense_acc"][i] = nonsense_acc
-            print(f"Step {i}, Baseline Acc: {baseline_acc:.3f}, Inconsistent Acc: {inconsistent_acc:.3f}, Nonsense Acc: {nonsense_acc:.3f}")
-            exit()
         model.train()
         batch = {k: v.to(device) for k, v in batch.items()}
 
@@ -330,6 +304,14 @@ def training_loop_temporary_forgetting(
         optimizer.step()
         scheduler.step()
         optimizer.zero_grad()
+
+        if i % args.eval_interval == 0:
+            model.eval()
+            results = evaluate(model, tokenizer, eval_data, args)
+            metrics["baseline_acc"][i] = results["consistent_logit_acc"]
+            metrics["inconsistent_acc"][i] = results["inconsistent_logit_acc"]
+            metrics["nonsense_acc"][i] = results["nonsense_logit_acc"]
+            print(f"Step {i}, Baseline Acc: {metrics['baseline_acc'][i]:.3f}, Inconsistent Acc: {metrics['inconsistent_acc'][i]:.3f}, Nonsense Acc: {metrics['nonsense_acc'][i]:.3f}")
 
     return metrics
 
@@ -412,31 +394,17 @@ def plot_metrics(metrics, args):
 
 def main():
     args = parse_args()
-
     model, tokenizer = get_model_and_tokenizer(args.model, args.device)
-    valid_idx = tokenizer(args.valid_token, add_special_tokens=False)["input_ids"][0]
-    invalid_idx = tokenizer(" Yes", add_special_tokens=False)["input_ids"][0]
-    invalid_idx = tokenizer(" No", add_special_tokens=False)["input_ids"][0]
-    #print(f"valid_idx: {valid_idx}, invalid_idx: {invalid_idx}")
-    # check 7566 in the tokenizer vocab
-    #print(tokenizer.convert_ids_to_tokens(2360))
-    #exit()
-    train_loader = setup_dataset(tokenizer, args)
-    print("Loaded train dataset with {} examples".format(len(train_loader.dataset)))
 
     eval_data = pd.read_csv(args.eval_data)
     print("Loaded evaluation data with {} examples".format(len(eval_data)))
 
+    train_loader = setup_dataset(tokenizer, args)
+    print("Loaded train dataset with {} examples".format(len(train_loader.dataset)))
+
     total_steps = len(train_loader)
     optimizer = optim.AdamW(model.parameters(), lr=args.learning_rate)
     scheduler = get_linear_schedule_with_warmup(optimizer, num_warmup_steps=10, num_training_steps=total_steps)
-
-    model.eval()
-    baseline_acc = content_effect_eval(
-        model, tokenizer, eval_data, "consistent", valid_idx, invalid_idx, args, args.device
-    )
-    print(f"Baseline Acc: {baseline_acc:.3f}")
-    exit()
 
     metrics = training_loop_temporary_forgetting(
         model,
@@ -449,8 +417,6 @@ def main():
         forget_interval=args.forget_interval,
         device=args.device,
         args=args,
-        valid_idx=valid_idx,
-        invalid_idx=invalid_idx,
         mask_prob=args.mask_prob
     )
     
