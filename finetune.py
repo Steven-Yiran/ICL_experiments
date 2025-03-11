@@ -17,6 +17,7 @@ from transformers import (
 )
 import matplotlib.pyplot as plt
 
+sys.path.append('/users/yshi28/dev/ICL_experiments')
 from utils import (
     eval_prompt,
     evaluate,
@@ -395,7 +396,7 @@ def plot_metrics(metrics, args):
 def main():
     args = parse_args()
     model, tokenizer = get_model_and_tokenizer(args.model, args.device)
-
+ 
     eval_data = pd.read_csv(args.eval_data)
     print("Loaded evaluation data with {} examples".format(len(eval_data)))
 
