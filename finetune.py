@@ -20,10 +20,44 @@ import matplotlib.pyplot as plt
 sys.path.append('/users/yshi28/dev/ICL_experiments')
 from utils import (
     eval_prompt,
-    evaluate,
+    evaluate_content_effect,
     LogitAccuracy,
-    get_model_and_tokenizer
+    get_model_and_tokenizer,
+    plot_metrics
 )
+from behavioral import (
+    setup_behavior_dataset,
+    behavioral_analysis_t
+)
+
+vocabulary = [
+    " A",
+    " B",
+    " C",
+    " D",
+    " E",
+    " F",
+    " G",
+    " H",
+    " I",
+    " J",
+    " K",
+    " L",
+    " M",
+    " N",
+    " O",
+    " P",
+    " Q",
+    " R",
+    " S",
+    " T",
+    " U",
+    " V",
+    " W",
+    " X",
+    " Y",
+    " Z",
+]
 
 
 def parse_args():
@@ -189,18 +223,19 @@ def content_effect_eval(
         gold = row["gold"]
 
         prompt = eval_prompt(question)
-        inputs = tokenizer(prompt, return_tensors="pt").to(device)
-        logits = model(inputs["input_ids"]).logits
+        inputs = tokenizer.encode(prompt, return_tensors="pt").to(device)
+        with torch.no_grad():
+            logits = model(inputs).logits
 
         #Get top 5 tokens
-        _, top5_indices = torch.topk(logits[0, -1], 5)
-        # convert top5_indices to tokens
-        top5_tokens = tokenizer.convert_ids_to_tokens(top5_indices)
-        # Skip if neither valid nor invalid token in top 5
-        if valid_idx not in top5_indices and invalid_idx not in top5_indices:
-            skip_count += 1
-            print(f"valid_idx: {valid_idx}, invalid_idx: {invalid_idx}, top5_indices: {top5_indices}")
-            continue
+        # _, top5_indices = torch.topk(logits[0, -1], 5)
+        # # convert top5_indices to tokens
+        # top5_tokens = tokenizer.convert_ids_to_tokens(top5_indices)
+        # # Skip if neither valid nor invalid token in top 5
+        # if valid_idx not in top5_indices and invalid_idx not in top5_indices:
+        #     skip_count += 1
+        #     print(f"valid_idx: {valid_idx}, invalid_idx: {invalid_idx}, top5_indices: {top5_indices}")
+        #     continue
 
         if gold == "yes":
             correct_idx = valid_idx
@@ -222,14 +257,16 @@ def training_loop_temporary_forgetting(
         model,
         tokenizer,
         train_loader,
-        eval_data,
         optimizer,
         scheduler,
         num_forget_steps,
         forget_interval,
         mask_prob,
+        eval_data=None,
+        data_baseline=None,
+        data_nonce=None,
         initializer_range=None,
-        device=None,
+        device="cuda",
         args=None
     ):
     """Run the training loop with probabilistic temporary forgetting"""
@@ -243,14 +280,15 @@ def training_loop_temporary_forgetting(
     else:
         raise ValueError(f"Invalid model: {args.model}")
 
+    if initializer_range is None:
+        initializer_range = model.config.initializer_range
+
     metrics = {
         "baseline_acc": {},
         "inconsistent_acc": {},
         "nonsense_acc": {},
         "loss": {}
     }
-    
-    initializer_range = model.config.initializer_range
 
     for i, batch in enumerate(tqdm(train_loader)):
         if i > args.total_steps:
@@ -259,60 +297,77 @@ def training_loop_temporary_forgetting(
         model.train()
         batch = {k: v.to(device) for k, v in batch.items()}
 
-        do_forgetting = i > 0 and i < num_forget_steps and i % forget_interval == 0
-        if do_forgetting:
-            # Clone the original embeddings
-            original_embeddings = embedding_layer.weight.data.clone()
+        # Clone the original embeddings
+        original_embeddings = embedding_layer.weight.data.clone()
 
-            # Find unique tokens in this batch (ignoring pad token)
-            unique_tokens = torch.unique(batch["input_ids"])
-            unique_tokens = unique_tokens[unique_tokens != tokenizer.pad_token_id]
+        # Find unique tokens in this batch (ignoring pad token)
+        unique_tokens = torch.unique(batch["input_ids"])
+        unique_tokens = unique_tokens[unique_tokens != tokenizer.pad_token_id]
 
-            # Randomly select tokens to replace
-            mask = torch.rand(len(unique_tokens), device=device) < mask_prob
-            tokens_to_replace = unique_tokens[mask]
+        # Randomly select tokens to replace
+        mask = torch.rand(len(unique_tokens), device=device) < mask_prob
+        tokens_to_replace = unique_tokens[mask]
 
-            # Replace selected token embeddings with new random embeddings
-            with torch.no_grad():
-                random_embeddings = torch.normal(
-                    mean=0.0,
-                    std=initializer_range,
-                    size=(tokens_to_replace.size(0), embedding_layer.weight.shape[1]),
-                    device=device,
-                    dtype=embedding_layer.weight.dtype
-                )
-                embedding_layer.weight.data[tokens_to_replace] = random_embeddings
+        # Replace selected token embeddings with new random embeddings
+        with torch.no_grad():
+            random_embeddings = torch.normal(
+                mean=0.0,
+                std=initializer_range,
+                size=(tokens_to_replace.size(0), embedding_layer.weight.shape[1]),
+                device=device,
+                dtype=embedding_layer.weight.dtype
+            )
+            embedding_layer.weight.data[tokens_to_replace] = random_embeddings
 
-            # Assert that the LM head weights match the transformer embeddings
-            assert torch.all(embedding_layer.weight.data == model.lm_head.weight.data).item()
+        # Assert that the LM head weights match the transformer embeddings
+        assert torch.all(embedding_layer.weight.data == model.lm_head.weight.data).item()
 
         outputs = model(**batch)
         loss = outputs.loss
+
         metrics["loss"][i] = loss.item()
         loss.backward()
 
-        if do_forgetting:
-            # Restore original embeddings for the replaced tokens
-            with torch.no_grad():
-                embedding_layer.weight.data[tokens_to_replace] = original_embeddings[tokens_to_replace]
+        # Restore original embeddings for the replaced tokens
+        with torch.no_grad():
+            embedding_layer.weight.data[tokens_to_replace] = original_embeddings[tokens_to_replace]
 
-            assert torch.all(embedding_layer.weight.data == model.lm_head.weight.data).item()
-            assert torch.all(embedding_layer.weight.data == original_embeddings).item()
+        assert torch.all(embedding_layer.weight.data == model.lm_head.weight.data).item()
+        assert torch.all(embedding_layer.weight.data == original_embeddings).item()
 
-            # Prevent any update to the embedding weights
-            embedding_layer.weight.grad = None
+        # Prevent any update to the embedding weights
+        embedding_layer.weight.grad = None
 
         optimizer.step()
         scheduler.step()
         optimizer.zero_grad()
 
+        # if i % args.eval_interval == 0:
+        #     model.eval()
+        #     results = evaluate_content_effect(model, tokenizer, eval_data, args)
+        #     metrics["baseline_acc"][i] = results["consistent_logit_acc"]
+        #     metrics["inconsistent_acc"][i] = results["inconsistent_logit_acc"]
+        #     metrics["nonsense_acc"][i] = results["nonsense_logit_acc"]
+        #     print(f"Step {i}, Baseline Acc: {metrics['baseline_acc'][i]:.3f}, Inconsistent Acc: {metrics['inconsistent_acc'][i]:.3f}, Nonsense Acc: {metrics['nonsense_acc'][i]:.3f}")
+
         if i % args.eval_interval == 0:
             model.eval()
-            results = evaluate(model, tokenizer, eval_data, args)
-            metrics["baseline_acc"][i] = results["consistent_logit_acc"]
-            metrics["inconsistent_acc"][i] = results["inconsistent_logit_acc"]
-            metrics["nonsense_acc"][i] = results["nonsense_logit_acc"]
-            print(f"Step {i}, Baseline Acc: {metrics['baseline_acc'][i]:.3f}, Inconsistent Acc: {metrics['inconsistent_acc'][i]:.3f}, Nonsense Acc: {metrics['nonsense_acc'][i]:.3f}")
+            if eval_data is not None:
+                results = evaluate_content_effect(model, tokenizer, eval_data, args)
+                metrics["baseline_acc"][i] = results["consistent_logit_acc"]
+                metrics["inconsistent_acc"][i] = results["inconsistent_logit_acc"]
+                metrics["nonsense_acc"][i] = results["nonsense_logit_acc"]
+                print(f"Step {i}, Baseline Acc: {metrics['baseline_acc'][i]:.3f}, Inconsistent Acc: {metrics['inconsistent_acc'][i]:.3f}, Nonsense Acc: {metrics['nonsense_acc'][i]:.3f}")
+            elif data_baseline is not None and data_nonce is not None:
+                baseline_acc = behavioral_analysis_t(
+                    model, tokenizer, vocabulary, "clean_x", "clean_y", "wrong_y", device, data_baseline, verbose=False
+                ).item()
+                nonce_acc = behavioral_analysis_t(
+                    model, tokenizer, vocabulary, "clean_x", "clean_y", "wrong_y", device, data_nonce, verbose=True
+                ).item()
+                metrics["baseline_acc"][i] = baseline_acc
+                metrics["nonsense_acc"][i] = nonce_acc
+                print(f"Step {i}, Baseline Acc: {baseline_acc}, Nonsense Acc: {nonce_acc}")
 
     return metrics
 
@@ -349,76 +404,53 @@ def setup_dataset(tokenizer, args):
     )
     return train_loader
 
-def plot_metrics(metrics, args):
-    """
-    Create a plot for the training dynamics of the models.
-    """
-    # Create figure with two y-axes
-    fig, ax1 = plt.subplots(figsize=(10, 6))
-    ax2 = ax1.twinx()
-
-    # Plot each accuracy metric on the first y-axis
-    steps = list(metrics["baseline_acc"].keys())
-    steps = [int(x) for x in steps]
-    
-    baseline_acc = list(metrics["baseline_acc"].values())
-    inconsistent_acc = list(metrics["inconsistent_acc"].values()) 
-    nonsense_acc = list(metrics["nonsense_acc"].values())
-
-    ax1.plot(steps, baseline_acc, label='Consistent', color='#2ecc71', marker='o')
-    ax1.plot(steps, inconsistent_acc, label='Inconsistent', color='#e74c3c', marker='s')
-    ax1.plot(steps, nonsense_acc, label='Nonsense', color='#3498db', marker='^')
-    ax1.set_xlabel('Step')
-    ax1.set_ylabel('Accuracy')
-    ax1.set_xlim(0, max(steps))
-
-    # Plot loss on the second y-axis
-    loss_steps = list(metrics["loss"].keys())
-    loss_steps = [int(x) for x in loss_steps]
-    losses = list(metrics["loss"].values())
-    ax2.plot(loss_steps, losses, label='Loss', color='#9b59b6', linestyle='--')
-    ax2.set_ylabel('Loss')
-
-    # Add legends for both axes
-    lines1, labels1 = ax1.get_legend_handles_labels()
-    lines2, labels2 = ax2.get_legend_handles_labels()
-    ax1.legend(lines1 + lines2, labels1 + labels2, loc='upper right')
-
-    plt.title(f"{args.model.split('/')[-1]} Training Dynamics (N={args.num_forget_steps}, k={args.forget_interval})")
-    plt.grid(True, linestyle='--', alpha=0.7)
-
-    # Save plot
-    plt.tight_layout()
-    plt.savefig(f'{args.output_dir}/{args.model.split("/")[-1]}_N{args.num_forget_steps}k{args.forget_interval}_dynamics.png')
-    plt.close()
-
 
 def main():
     args = parse_args()
     model, tokenizer = get_model_and_tokenizer(args.model, args.device)
  
-    eval_data = pd.read_csv(args.eval_data)
-    print("Loaded evaluation data with {} examples".format(len(eval_data)))
+    #eval_data = pd.read_csv(args.eval_data)
+    #print("Loaded evaluation data with {} examples".format(len(eval_data)))
+    data_baseline, data_nonce = setup_behavior_dataset(vocabulary, data_size=300)
+    print("Loade baseline data with {} examples".format(len(data_baseline["clean_x"])))
+    print("Loade nonsense data with {} examples".format(len(data_nonce["clean_x"])))
 
     train_loader = setup_dataset(tokenizer, args)
     print("Loaded train dataset with {} examples".format(len(train_loader.dataset)))
 
     total_steps = len(train_loader)
     optimizer = optim.AdamW(model.parameters(), lr=args.learning_rate)
-    scheduler = get_linear_schedule_with_warmup(optimizer, num_warmup_steps=10, num_training_steps=total_steps)
+    scheduler = get_linear_schedule_with_warmup(optimizer, num_warmup_steps=500, num_training_steps=total_steps)
+
+    # metrics = training_loop_temporary_forgetting(
+    #     model,
+    #     tokenizer,
+    #     train_loader,
+    #     optimizer,
+    #     scheduler,
+    #     eval_data=eval_data,
+    #     num_forget_steps=args.num_forget_steps,
+    #     forget_interval=args.forget_interval,
+    #     device=args.device,
+    #     args=args,
+    #     mask_prob=args.mask_prob,
+    #     initializer_range=model.config.initializer_range
+    # )
 
     metrics = training_loop_temporary_forgetting(
         model,
         tokenizer,
         train_loader,
-        eval_data,
         optimizer,
         scheduler,
+        data_baseline=data_baseline,
+        data_nonce=data_nonce,
         num_forget_steps=args.num_forget_steps,
         forget_interval=args.forget_interval,
         device=args.device,
         args=args,
-        mask_prob=args.mask_prob
+        mask_prob=args.mask_prob,
+        initializer_range=model.config.initializer_range
     )
     
     plot_metrics(metrics, args)

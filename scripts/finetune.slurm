@@ -15,13 +15,13 @@ source $REPO_PATH/venv/bin/activate
 
 echo "Running pipeline"
 MODEL="openai-community/gpt2-large"
-TOTAL_STEPS=400
+TOTAL_STEPS=1
 NUM_FORGET_STEPS=600
 FORGET_INTERVAL=50
-EVAL_INTERVAL=25
+EVAL_INTERVAL=1
 EVAL_DATA_PATH=$REPO_PATH/data/eval_prompts.csv
 OUTPUT_DIR=$REPO_PATH/results
-LEARNING_RATE=5e-6
+LEARNING_RATE=3e-5
 MASK_PROB=0.1
 
 echo "Model: $MODEL"
@@ -44,4 +44,6 @@ python finetune.py \
     --batch_size 2 \
     --learning_rate $LEARNING_RATE \
     --mask_prob $MASK_PROB \
+    --valid_token "Yes" \
+    --invalid_token "No" \
     --device cuda
